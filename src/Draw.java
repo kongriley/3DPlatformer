@@ -24,7 +24,7 @@ public class Draw {
 		objects.add(prism);
 		prism.translate(new Vec3(0, 200, 0));
 //		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
-		playerBox = new BoxCollider(CENTER, CENTER.add(new Vec3(1, 1, 1)));
+		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 100, 0)), CENTER.add(new Vec3(1, 100, 1)));
 		JFrame frame = new JFrame();
 		
 		label = new JLabel("X: 0, Y:0, Z:0");

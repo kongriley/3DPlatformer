@@ -43,7 +43,7 @@ public class BoxCollider {
 		}
 		for(BoxCollider b:array){
 			if(isTouching(b)){
-				Object3d.setVelocityArray(objs, Vec3.ZERO);
+				Object3d.setVelocityArrayY(objs, 0);
 			}
 		}
 	}
