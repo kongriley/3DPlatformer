@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public class Vec3 {
 	public static final Vec3 UP = new Vec3(0, -1, 0);
 	public static final Vec3 DOWN = new Vec3(0, 1, 0);
-	public static final Vec3 LEFT = new Vec3(-1, 0, 0);
-	public static final Vec3 RIGHT = new Vec3(1, 0, 0);
+	public static final Vec3 LEFT = new Vec3(1, 0, 0);
+	public static final Vec3 RIGHT = new Vec3(-1, 0, 0);
 	public static final Vec3 FORWARD = new Vec3(0, 0, -1);
 	public static final Vec3 BACKWARD = new Vec3(0, 0, 1);
 	

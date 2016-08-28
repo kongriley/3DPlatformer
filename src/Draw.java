@@ -11,6 +11,7 @@ public class Draw {
 	public static String rotMode = "x";
 	ArrayList objects = new ArrayList<Object3d>();
 	static ArrayList vecs = new ArrayList<Vec3>();
+	RectPrism prism;
 	public static int W = 1000;
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
@@ -18,7 +19,9 @@ public class Draw {
 	public static JLabel label;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
-		objects.add(new Object3d(vecs));
+		prism = new RectPrism(CENTER, 250, 10, 3000);
+		objects.add(prism);
+		prism.translate(Vec3.DOWN.multiply(100));
 		
 		JFrame frame = new JFrame();
 		
@@ -56,7 +59,7 @@ public class Draw {
 	}
 	
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 500l;
+		public static final long MAX_DIST = 1500l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
@@ -75,7 +78,7 @@ public class Draw {
 			for(int[] i:arrays){
 				System.out.print("{");
 				for(int a:i){
-					System.out.print(((Vec3)vecs.get(a)).z + ",");
+					System.out.print((prism.get(a)).z + ",");
 				}
 				System.out.println("}");
 			}
@@ -85,8 +88,8 @@ public class Draw {
 //			g.setColor(Color.black);
 //			g.drawChars("Center".toCharArray(), 0, "Center".length(), getX(CENTER.x, CENTER.z), getY(CENTER.y, CENTER.z));
 			
-			for (int i = 0; i < vecs.size(); i++) {
-				Vec3 vec = (Vec3) vecs.get(i);
+			for (int i = 0; i < prism.size(); i++) {
+				Vec3 vec = (Vec3) prism.get(i);
 				vec.print();
 				drawPoint(vec, g);
 				char[] charAr = {Integer.toString(i).charAt(0)};
@@ -112,7 +115,7 @@ public class Draw {
 		private void draw3d(int[][] arrays, Graphics g){
 			for(int i=0; i<arrays.length; i++){
 				int[] aInt = arrays[i];
-				int[][] aaInt = getArray(vecs, aInt);
+				int[][] aaInt = getArray(prism.vecs, aInt);
 				g.setColor(Color.red);
 				g.fillPolygon(aaInt[0], aaInt[1], aInt.length);
 				g.setColor(Color.black);
@@ -133,13 +136,13 @@ public class Draw {
 			Integer[] VecsMidZ = new Integer[arrays.length];
 			for(int i=0; i<arrays.length; i++){
 				Vec3 vec1 = new Vec3(0,0,0);
-				vec1.x = ((Vec3)vecs.get(arrays[i][0])).x;
-				vec1.y = ((Vec3)vecs.get(arrays[i][0])).y;
-				vec1.z = ((Vec3)vecs.get(arrays[i][0])).z;
+				vec1.x = ((Vec3)prism.get(arrays[i][0])).x;
+				vec1.y = ((Vec3)prism.get(arrays[i][0])).y;
+				vec1.z = ((Vec3)prism.get(arrays[i][0])).z;
 				Vec3 vec2 = new Vec3(0,0,0);//(Vec3) vecs.get(arrays[i][2]);
-				vec2.x = ((Vec3)vecs.get(arrays[i][2])).x;
-				vec2.y = ((Vec3)vecs.get(arrays[i][2])).y;
-				vec2.z = ((Vec3)vecs.get(arrays[i][2])).z;
+				vec2.x = ((Vec3)prism.get(arrays[i][2])).x;
+				vec2.y = ((Vec3)prism.get(arrays[i][2])).y;
+				vec2.z = ((Vec3)prism.get(arrays[i][2])).z;
 				Vec3.midpoint(vec1, vec2);
 				
 				VecsMidZ[i]=(Integer)(int) vec1.z;

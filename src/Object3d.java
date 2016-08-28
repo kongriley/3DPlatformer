@@ -3,6 +3,9 @@ import java.util.ArrayList;
 public class Object3d {
 	ArrayList vecs = new ArrayList<Vec3>();
 	
+	Object3d(){
+	}
+	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
 	}
@@ -21,6 +24,12 @@ public class Object3d {
 		for (int i = 0; i < vecs.size(); i++) {
 			((Vec3) vecs.get(i)).rotate(axis, point, deg);
 		}
+	}
+	public Vec3 get(int i){
+		return (Vec3) vecs.get(i);
+	}
+	public int size(){
+		return vecs.size();
 	}
 	
 	public static void dilateArray(ArrayList objs, Vec3 vec, float scale) {
