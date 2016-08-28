@@ -32,8 +32,9 @@ public class BoxCollider {
 				((B1.x<A1.x && B2.x>A1.x) || (B1.x>A1.x && B2.x<A1.x))  &&  
 				((B1.y<A1.y && B2.y>A1.y) || (B1.y>A1.y && B2.y<A1.y))){
 			return true;
-		}
+		} else {
 		return false;
+		}
 	}
 	
 	public void isTouchingArrayGrav(ArrayList objs){
