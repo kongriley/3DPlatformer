@@ -2,11 +2,16 @@ import java.util.ArrayList;
 
 public class Object3d {
 	ArrayList<Vec3> vecs = new ArrayList<Vec3>();
+	public Vec3 velocity = Vec3.ZERO;
 	Object3d(){
 	}
 	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
+	}
+	
+	public void update(){
+		translate(velocity);
 	}
 	
 	public void dilate(Vec3 vec, float scale) {
