@@ -63,7 +63,7 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 200l;
+		public static final long MAX_DIST = 500l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
@@ -131,15 +131,22 @@ public class Draw {
 		}
 		private int getX(float x, float z){
 			int rInt = (int)((x - (x - W/2)*z/MAX_DIST));
-			if(x < W/2){
-				rInt-=W/4;
-			}else if(x > W/2){
-				rInt+=W/4;
+//			if(x+100 < W/2){
+//				rInt-=W/4;
+//			}else if(x-100 > W/2){
+//				rInt+=W/4;
+//			}
+			if(z>MAX_DIST){
+				rInt = (int) CENTER.x;
 			}
 			return rInt;
 		}
 		private int getY(float y, float z){
-			return (int)((y - (y - H/2)*z/MAX_DIST)+H/20);
+			int rInt = (int)((y - (y - H/2)*z/MAX_DIST)+H/15);
+			if(z>MAX_DIST){
+				rInt = (int) CENTER.x;
+			}
+			return rInt;
 		}
 		private int[][] sortFaces(int[][] arrays){
 
