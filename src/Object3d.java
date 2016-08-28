@@ -14,6 +14,10 @@ public class Object3d {
 		translate(velocity);
 	}
 	
+	public void addVelocity(Vec3 vec){
+		velocity.translate(vec);
+	}
+	
 	public void dilate(Vec3 vec, float scale) {
 		for (int i = 0; i < vecs.size(); i++) {
 			((Vec3) vecs.get(i)).dilate(vec, scale);
@@ -57,6 +61,12 @@ public class Object3d {
 	public static void updateArray(ArrayList<Object3d> objs){
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).update();
+		}
+	}
+	
+	public static void addVelocityArray(ArrayList<Object3d> objs, Vec3 vec){
+		for (int i = 0; i < objs.size(); i++) {
+			((Object3d) objs.get(i)).addVelocity(vec);
 		}
 	}
 }

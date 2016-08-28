@@ -61,12 +61,13 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 1500l;
+		public static final long MAX_DIST = 3000l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
 		protected void paintComponent(Graphics g) {
 			Object3d.updateArray(objects);
+			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			update();
 			g.clearRect(0, 0, W*2, H*2);
 			int[] a1 = {0,4,5,1};
