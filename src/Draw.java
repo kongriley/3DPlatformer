@@ -16,7 +16,6 @@ public class Draw {
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
-	public static JLabel label;
 	public static BoxCollider playerBox;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
@@ -27,11 +26,6 @@ public class Draw {
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 100, 0)), CENTER.add(new Vec3(1, 100, 1)));
 		JFrame frame = new JFrame();
 		
-		label = new JLabel("X: 0, Y:0, Z:0");
-		label.setOpaque(true);
-	    label.setBackground(Color.GRAY);
-	    label.setForeground(Color.WHITE);
-		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
 		
@@ -39,7 +33,6 @@ public class Draw {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(label, BorderLayout.NORTH);
 		frame.add(panel, BorderLayout.CENTER);
 		
 		(panel).paintComponent(panel.getGraphics());
@@ -63,7 +56,7 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 500l;
+		public static final long MAX_DIST = 1l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
@@ -130,22 +123,22 @@ public class Draw {
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
 		private int getX(float x, float z){
-			int rInt = (int)((x - (x - W/2)*z/MAX_DIST));
+//			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
+			int average_len = W/2;
+			
+			int rInt = (int) ((( x-W/2) * ( average_len / 2 ) ) / ( z + ( average_len / 2 ) )) + W/2;
+
 //			if(x+100 < W/2){
 //				rInt-=W/4;
 //			}else if(x-100 > W/2){
 //				rInt+=W/4;
 //			}
-			if(z>MAX_DIST){
-				rInt = (int) CENTER.x;
-			}
 			return rInt;
 		}
 		private int getY(float y, float z){
-			int rInt = (int)((y - (y - H/2)*z/MAX_DIST)+H/15);
-			if(z>MAX_DIST){
-				rInt = (int) CENTER.x;
-			}
+//			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
+			int average_len = H/2;
+			int rInt = (int) (((y-H/2) * ( average_len / 2 ) ) / ( z + ( average_len / 2 ) )) + H/2;
 			return rInt;
 		}
 		private int[][] sortFaces(int[][] arrays){
