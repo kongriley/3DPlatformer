@@ -21,9 +21,16 @@ public class BoxCollider {
 //		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
 //			return true;
 //		}
-		if (!(B1.x > A1.x+A2.x || B1.x+B2.x < A1.x ||
-		        B1.y < A1.y+A2.y || B1.y+B2.y > A1.y ||
-		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
+//		if (!(B1.x > A1.x+A2.x || B1.x+B2.x < A1.x ||
+//		        B1.y > A1.y+A2.y || B1.y+B2.y < A1.y ||
+//		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
+//			return false;
+//		}
+		if(((A1.x<B1.x && A2.x>B1.x) || (A1.x>B1.x && A2.x<B1.x))  &&  
+				((A1.y<B1.y && A2.y>B1.y) || (A1.y>B1.y && A2.y<B1.y)) 
+				||
+				((B1.x<A1.x && B2.x>A1.x) || (B1.x>A1.x && B2.x<A1.x))  &&  
+				((B1.y<A1.y && B2.y>A1.y) || (B1.y>A1.y && B2.y<A1.y))){
 			return true;
 		}
 		return false;

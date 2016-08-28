@@ -16,6 +16,7 @@ public class Draw {
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
+	public static JLabel label;
 	public static BoxCollider playerBox;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
@@ -26,6 +27,11 @@ public class Draw {
 		playerBox = new BoxCollider(CENTER, CENTER.add(new Vec3(1, 1, 1)));
 		JFrame frame = new JFrame();
 		
+		label = new JLabel("X: 0, Y:0, Z:0");
+		label.setOpaque(true);
+	    label.setBackground(Color.GRAY);
+	    label.setForeground(Color.WHITE);
+		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
 		
@@ -33,6 +39,7 @@ public class Draw {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
+		frame.add(label, BorderLayout.NORTH);
 		frame.add(panel, BorderLayout.CENTER);
 		
 		(panel).paintComponent(panel.getGraphics());
@@ -56,7 +63,7 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 1l;
+		public static final long MAX_DIST = 200l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
@@ -123,16 +130,16 @@ public class Draw {
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
 		private int getX(float x, float z){
-			if(z<MAX_DIST){
-				return (int)(x - Math.pow(((x - W/2)*1/MAX_DIST), (z)));
+			int rInt = (int)((x - (x - W/2)*z/MAX_DIST));
+			if(x < W/2){
+				rInt-=W/4;
+			}else if(x > W/2){
+				rInt+=W/4;
 			}
-			return (int) CENTER.x;
+			return rInt;
 		}
 		private int getY(float y, float z){
-			if(z<MAX_DIST){
-				return (int)(y - Math.pow(((y - H/2)*1/MAX_DIST), (z)));
-			}
-			return (int) CENTER.x;
+			return (int)((y - (y - H/2)*z/MAX_DIST)+H/20);
 		}
 		private int[][] sortFaces(int[][] arrays){
 
@@ -194,9 +201,10 @@ public class Draw {
 		}
 		public void update(){
 
-			Object3d.updateArray(objects);
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
+			Object3d.updateArray(objects);
+			
 			if(keyNum == KeyEvent.VK_W && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5));
 			}else if(keyNum == KeyEvent.VK_S && keyDown){
