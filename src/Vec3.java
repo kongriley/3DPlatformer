@@ -98,6 +98,17 @@ public class Vec3 {
 		this.z += vec.z;
 	}
 	
+	public Vec3 add(Vec3 vec){
+		Vec3 vec3 = new Vec3(0,0,0);
+		vec3.x = this.x;
+		vec3.y = this.y;
+		vec3.z = this.z;
+		vec3.x += vec.x;
+		vec3.y += vec.y;
+		vec3.z += vec.z;
+		return vec3;
+	}
+	
 //	public static void translateArray(ArrayList vecs, Vec3 vec) {
 //		for (int i = 0; i < vecs.size(); i++) {
 //			((Vec3) vecs.get(i)).translate(vec);

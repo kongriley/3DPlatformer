@@ -15,5 +15,6 @@ public class RectPrism extends Object3d{
 			}
 		}
 		this.vecs = vecA;
+		setBox();
 	}
 }

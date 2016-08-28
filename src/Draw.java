@@ -16,19 +16,15 @@ public class Draw {
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
-	public static JLabel label;
+	public static BoxCollider playerBox;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
-		prism = new RectPrism(CENTER, 250, 10, 3000);
+		prism = new RectPrism(CENTER, 250, 10, 250);
 		objects.add(prism);
-		prism.translate(Vec3.DOWN.multiply(100));
-		
+		prism.translate(new Vec3(0, 200, 0));
+//		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
+		playerBox = new BoxCollider(CENTER, CENTER.add(new Vec3(1, 1, 1)));
 		JFrame frame = new JFrame();
-		
-		label = new JLabel("X: 0, Y:0, Z:0");
-		label.setOpaque(true);
-	    label.setBackground(Color.GRAY);
-	    label.setForeground(Color.WHITE);
 		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
@@ -37,7 +33,6 @@ public class Draw {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(label, BorderLayout.NORTH);
 		frame.add(panel, BorderLayout.CENTER);
 		
 		(panel).paintComponent(panel.getGraphics());
@@ -61,13 +56,11 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 3000l;
+		public static final long MAX_DIST = 1l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
 		protected void paintComponent(Graphics g) {
-			Object3d.updateArray(objects);
-			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			update();
 			g.clearRect(0, 0, W*2, H*2);
 			int[] a1 = {0,4,5,1};
@@ -79,13 +72,13 @@ public class Draw {
 			int[][] arrays = {a1, a2, a3, a4, a5, a6};
 			arrays = sortFaces(arrays);
 			
-			for(int[] i:arrays){
-				System.out.print("{");
-				for(int a:i){
-					System.out.print((prism.get(a)).z + ",");
-				}
-				System.out.println("}");
-			}
+//			for(int[] i:arrays){
+//				System.out.print("{");
+//				for(int a:i){
+//					System.out.print((prism.get(a)).z + ",");
+//				}
+//				System.out.println("}");
+//			}
 			
 //			g.setColor(Color.red);
 //			drawPoint(CENTER, g);
@@ -130,10 +123,16 @@ public class Draw {
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
 		private int getX(float x, float z){
-			return (int)(x - (x - W/2)*z/MAX_DIST);
+			if(z<MAX_DIST){
+				return (int)(x - Math.pow(((x - W/2)*1/MAX_DIST), (z)));
+			}
+			return (int) CENTER.x;
 		}
 		private int getY(float y, float z){
-			return (int)(y - (y - H/2)*z/MAX_DIST);
+			if(z<MAX_DIST){
+				return (int)(y - Math.pow(((y - H/2)*1/MAX_DIST), (z)));
+			}
+			return (int) CENTER.x;
 		}
 		private int[][] sortFaces(int[][] arrays){
 
@@ -168,7 +167,7 @@ public class Draw {
 			for(int i=0; i<arrays.length; i++){
 				int mod = VecsMidZ[i]%10;
 				if (mod<0) mod += 10;
-				System.out.println(mod);
+//				System.out.println(mod);
 				arrays[i] = temp[mod];
 			}
 			
@@ -194,6 +193,10 @@ public class Draw {
 			keyDown = false;
 		}
 		public void update(){
+
+			Object3d.updateArray(objects);
+			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
+			playerBox.isTouchingArrayGrav(objects);
 			if(keyNum == KeyEvent.VK_W && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5));
 			}else if(keyNum == KeyEvent.VK_S && keyDown){

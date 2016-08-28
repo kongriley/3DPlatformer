@@ -12,8 +12,13 @@ public class Object3d {
 		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
 	}
 	
+	public void setBox(){
+		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
+	}
+	
 	public void update(){
 		translate(velocity);
+		velocity.print();
 	}
 	
 	public void addVelocity(Vec3 vec){
@@ -65,6 +70,7 @@ public class Object3d {
 	}
 	
 	public static void updateArray(ArrayList<Object3d> objs){
+		System.out.println("Velocity");
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).update();
 		}
