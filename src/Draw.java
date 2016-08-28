@@ -66,6 +66,7 @@ public class Draw {
 			addKeyListener(this);
 		}
 		protected void paintComponent(Graphics g) {
+			Object3d.updateArray(objects);
 			update();
 			g.clearRect(0, 0, W*2, H*2);
 			int[] a1 = {0,4,5,1};
