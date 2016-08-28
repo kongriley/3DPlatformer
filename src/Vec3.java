@@ -76,12 +76,12 @@ public class Vec3 {
 		}
 		return vecs;
 	}
-	
-	public static void rotateArray(ArrayList vecs, String axis, Vec3 point, float deg) {
-		for (int i = 0; i < vecs.size(); i++) {
-			((Vec3) vecs.get(i)).rotate(axis, point, deg);
-		}
-	}
+//	
+//	public static void rotateArray(ArrayList vecs, String axis, Vec3 point, float deg) {
+//		for (int i = 0; i < vecs.size(); i++) {
+//			((Vec3) vecs.get(i)).rotate(axis, point, deg);
+//		}
+//	}
 	
 	public Vec3 multiply(float m){
 		Vec3 vec = new Vec3(this.x, this.y, this.z);
@@ -97,21 +97,21 @@ public class Vec3 {
 		this.z += vec.z;
 	}
 	
-	public static void translateArray(ArrayList vecs, Vec3 vec) {
-		for (int i = 0; i < vecs.size(); i++) {
-			((Vec3) vecs.get(i)).translate(vec);
-		}
-	}
-	
+//	public static void translateArray(ArrayList vecs, Vec3 vec) {
+//		for (int i = 0; i < vecs.size(); i++) {
+//			((Vec3) vecs.get(i)).translate(vec);
+//		}
+//	}
+//	
 	public void dilate(Vec3 vec, float scale){
 		translate(new Vec3((this.x - vec.x)*(scale-1), (this.y - vec.y)*(scale-1), (this.z - vec.z)*(scale-1)));
 	}
 	
-	public static void dilateArray(ArrayList vecs, Vec3 vec, float scale) {
-		for (int i = 0; i < vecs.size(); i++) {
-			((Vec3) vecs.get(i)).dilate(vec, scale);
-		}
-	}
+//	public static void dilateArray(ArrayList vecs, Vec3 vec, float scale) {
+//		for (int i = 0; i < vecs.size(); i++) {
+//			((Vec3) vecs.get(i)).dilate(vec, scale);
+//		}
+//	}
 	
 	public static Vec3 midpoint(Vec3 vec1, Vec3 vec2){
 		vec1.translate(vec2);
