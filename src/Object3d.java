@@ -3,11 +3,13 @@ import java.util.ArrayList;
 public class Object3d {
 	ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	public Vec3 velocity = Vec3.ZERO;
+	public BoxCollider boxCollider;
 	Object3d(){
 	}
 	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
+		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
 	}
 	
 	public void update(){
@@ -16,6 +18,10 @@ public class Object3d {
 	
 	public void addVelocity(Vec3 vec){
 		velocity.translate(vec);
+	}
+	
+	public void setVelocity(Vec3 vec){
+		this.velocity = vec;
 	}
 	
 	public void dilate(Vec3 vec, float scale) {
@@ -67,6 +73,12 @@ public class Object3d {
 	public static void addVelocityArray(ArrayList<Object3d> objs, Vec3 vec){
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).addVelocity(vec);
+		}
+	}
+	
+	public static void setVelocityArray(ArrayList<Object3d> objs, Vec3 vec){
+		for (int i = 0; i < objs.size(); i++) {
+			((Object3d) objs.get(i)).setVelocity(vec);
 		}
 	}
 }
