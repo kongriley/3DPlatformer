@@ -4,11 +4,12 @@ import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
 public class Draw {
-	int frameCount = 0;
+	boolean keyDown = false;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
 	public static String rotMode = "x";
+	ArrayList objects = new ArrayList<Object3d>();
 	static ArrayList vecs = new ArrayList<Vec3>();
 	public static int W = 1000;
 	public static int H = 1000;
@@ -16,11 +17,8 @@ public class Draw {
 	public static FrameDraw panel;
 	public static JLabel label;
 	Draw() {
-//		vecs.add(new Vec3(500, 250, 0));
-//		((Vec3)vecs.get(0)).Rotate("z", new Vec3(H/2, W/2, 0), -90);
-//		System.out.println(((Vec3)vecs.get(0)).x + " " + ((Vec3)vecs.get(0)).y + " " + ((Vec3)vecs.get(0)).z);
 		vecs = Vec3.getCube(CENTER, 100);
-		//DoStuff();
+		objects.add(new Object3d(vecs));
 		
 		JFrame frame = new JFrame();
 		
@@ -42,16 +40,6 @@ public class Draw {
 		(panel).paintComponent(panel.getGraphics());
 		
 		frame.pack();
-		Vec3.translateArray(vecs, new Vec3(0, -150, 0));
-//		while(true){
-//			sleep(100);
-//			Vec3.rotateArray(vecs, "z", CENTER, 3);
-//			Vec3.rotateArray(vecs, "y", CENTER, 3);
-//			Vec3.rotateArray(vecs, "x", CENTER, 3);
-//		//Vec3.rotateArray(vecs, "y", new Vec3(W/2, H/2, 0), 4);
-//			(panel).paintComponent(panel.getGraphics());
-//		
-//		}
 		Timer t = new Timer();
 		t.schedule(new DoStuff(), 0, 30);
 	}
@@ -59,12 +47,6 @@ public class Draw {
 		@Override
 		public void run() {
 			//Vec3.dilateArray(vecs, CENTER, 0.99f);
-			Vec3.rotateArray(vecs, "x", CENTER, xRot);
-			Vec3.rotateArray(vecs, "y", CENTER, yRot);
-			Vec3.rotateArray(vecs, "z", CENTER, zRot);
-			frameCount ++;
-			label.setText("Mode: " + rotMode + " X:" + xRot + ", Y:" + yRot + ", Z:" + zRot);
-			
 			(panel).repaint();
 		}
 	}
@@ -74,11 +56,12 @@ public class Draw {
 	}
 	
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 5000l;
+		public static final long MAX_DIST = 500l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
 		protected void paintComponent(Graphics g) {
+			update();
 			g.clearRect(0, 0, W*2, H*2);
 			int[] a1 = {0,4,5,1};
 			int[] a2 = {2,0,1,3};
@@ -87,19 +70,6 @@ public class Draw {
 			int[] a5 = {3,7,5,1};
 			int[] a6 = {2,6,4,0};
 			int[][] arrays = {a1, a2, a3, a4, a5, a6};
-			
-			//lambda with arrow thing-a-am-gigs
-//			Arrays.sort(arrays, (aa1, aa2) -> 
-//			((Integer)(int)(Vec3.midpoint((Vec3)vecs.get(aa1[3]),
-//					(Vec3)vecs.get(aa1[1])).z)).compareTo
-//			((Integer)(int)(Vec3.midpoint((Vec3)vecs.get(aa2[3]),
-//					(Vec3)vecs.get(aa2[1])).z)));
-			
-//			Arrays.sort(arrays, (aa1, aa2) -> 
-//			((Integer)(int)(Vec3.midpoint((Vec3)vecs.get(aa1[0]),
-//					(Vec3)vecs.get(aa1[2])).z)).compareTo
-//			((Integer)(int)(Vec3.midpoint((Vec3)vecs.get(aa2[0]),
-//					(Vec3)vecs.get(aa2[2])).z)));
 			arrays = sortFaces(arrays);
 			
 			for(int[] i:arrays){
@@ -110,10 +80,10 @@ public class Draw {
 				System.out.println("}");
 			}
 			
-			g.setColor(Color.red);
-			drawPoint(CENTER, g);
-			g.setColor(Color.black);
-			g.drawChars("Center".toCharArray(), 0, "Center".length(), getX(CENTER.x, CENTER.z), getY(CENTER.y, CENTER.z));
+//			g.setColor(Color.red);
+//			drawPoint(CENTER, g);
+//			g.setColor(Color.black);
+//			g.drawChars("Center".toCharArray(), 0, "Center".length(), getX(CENTER.x, CENTER.z), getY(CENTER.y, CENTER.z));
 			
 			for (int i = 0; i < vecs.size(); i++) {
 				Vec3 vec = (Vec3) vecs.get(i);
@@ -123,16 +93,8 @@ public class Draw {
 				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
 			}
 			System.out.println("\n\n");
-//			for(int i=0; i<arrays.length; i++){
-//				int[] aInt = arrays[i];
-//				int[][] aaInt = getArray(vecs, aInt);
-//				g.drawPolygon(aaInt[0], aaInt[1], aInt.length);
-//			}
 			draw3d(arrays, g);
 		}
-//		private Integer getZInt(int[] a){
-//			return Vec3.midpoint((Vec3)vecs.get(a[0]), (Vec3)vecs.get(a[2]));
-//		}
 		private int[][] getArray(ArrayList vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
 			
@@ -151,24 +113,7 @@ public class Draw {
 			for(int i=0; i<arrays.length; i++){
 				int[] aInt = arrays[i];
 				int[][] aaInt = getArray(vecs, aInt);
-				if(frameCount == 1){
-				g.setColor(Color.black);
-				}else if (frameCount == 2){
-					g.setColor(Color.red);
-				}else if (frameCount == 3){
-					g.setColor(Color.orange);
-				}else if (frameCount == 4){
-					g.setColor(Color.yellow);
-				}else if (frameCount == 5){
-					g.setColor(Color.green);
-				}else if (frameCount == 6){
-					g.setColor(Color.blue);
-				}else if (frameCount == 7){
-					g.setColor(Color.magenta);
-				}
-				else{
-					frameCount = 0;
-				}
+				g.setColor(Color.red);
 				g.fillPolygon(aaInt[0], aaInt[1], aInt.length);
 				g.setColor(Color.black);
 				g.drawPolygon(aaInt[0], aaInt[1], aInt.length);
@@ -187,9 +132,6 @@ public class Draw {
 
 			Integer[] VecsMidZ = new Integer[arrays.length];
 			for(int i=0; i<arrays.length; i++){
-//				int[] iArray = arrays[i];
-//				VecsMidZ[i] = (int)(Vec3.midpoint((Vec3)(vecs.get(iArray[0])), (Vec3)(vecs.get(iArray[2]))).z*10) + i;
-//				VecsMidZ[i] = ((int)(Vec3.midpoint((Vec3)(vecs.get(iArray[0])), (Vec3)(vecs.get(iArray[0]))).z)) * 10 + i;
 				Vec3 vec1 = new Vec3(0,0,0);
 				vec1.x = ((Vec3)vecs.get(arrays[i][0])).x;
 				vec1.y = ((Vec3)vecs.get(arrays[i][0])).y;
@@ -228,59 +170,31 @@ public class Draw {
 	        super.addNotify();
 	        requestFocus();
 	    }
+		
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println("HUEONGIWVWOGOIJGWKLMFCJEUWIHBHUBWIHFHOBHWROFHJBKWNOENFJFONJKW NOJFNKE WNJOFNJK EWJIODSJEWO");
-			if(e.getKeyChar() == 'x'){
-				rotMode = "x";
-			}else if(e.getKeyChar() == 'y'){
-				rotMode = "y";
-			}else if(e.getKeyChar() == 'z'){
-				rotMode = "z";
-			}
+//			System.out.println("HUEONGIWVWOGOIJGWKLMFCJEUWIHBHUBWIHFHOBHWROFHJBKWNOENFJFONJKW NOJFNKE WNJOFNJK EWJIODSJEWO");
 		}
+		int keyNum;
 		@Override
 		public void keyPressed(KeyEvent e) {
-			int keyNum = e.getKeyCode();
-			char keyChar = e.getKeyChar();
-			if(keyNum == KeyEvent.VK_RIGHT){
-				if(rotMode == "x"){
-					xRot += 1;
-				}else if(rotMode == "y"){
-					yRot += 1;
-				}else if(rotMode == "z"){
-					zRot += 1;
-				}
-			}else if(keyNum == KeyEvent.VK_LEFT){
-				if(rotMode == "x"){
-					xRot -= 1;
-				}else if(rotMode == "y"){
-					yRot -= 1;
-				}else if(rotMode == "z"){
-					zRot -= 1;
-				}
-			}
-			if(keyChar == '-'){
-				Vec3.dilateArray(vecs, CENTER, 0.99f);
-			}else if(keyChar == '='){
-				Vec3.dilateArray(vecs, CENTER, 1.01f);
-			}
-			if(keyChar == 'w'){
-				Vec3.translateArray(vecs, Vec3.UP.multiply(5));
-			}else if(keyChar == 's'){
-				Vec3.translateArray(vecs, Vec3.DOWN.multiply(5));
-			}else if(keyChar == 'a'){
-				Vec3.translateArray(vecs, Vec3.LEFT.multiply(5));
-			}else if(keyChar == 'd'){
-				Vec3.translateArray(vecs, Vec3.RIGHT.multiply(5));
-			}else if(keyChar == 'q'){
-				Vec3.translateArray(vecs, Vec3.FORWARD.multiply(5));
-			}else if(keyChar == 'e'){
-				Vec3.translateArray(vecs, Vec3.BACKWARD.multiply(5));
-			}
+			keyDown = true;
+			keyNum = e.getKeyCode();
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
+			keyDown = false;
+		}
+		public void update(){
+			if(keyNum == KeyEvent.VK_W && keyDown){
+				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5));
+			}else if(keyNum == KeyEvent.VK_S && keyDown){
+				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5));
+			}else if(keyNum == KeyEvent.VK_A && keyDown){
+				Object3d.translateArray(objects, Vec3.LEFT.multiply(5));
+			}else if(keyNum == KeyEvent.VK_D && keyDown){
+				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5));
+			}
 		}
 	}
 }
