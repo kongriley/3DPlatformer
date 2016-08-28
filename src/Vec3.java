@@ -64,8 +64,8 @@ public class Vec3 {
 //	var rotatedX = Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y-center.y) + center.x;
 //	var rotatedY = Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y;
 //	
-	public static ArrayList getCube(Vec3 center, float side){
-		ArrayList vecs = new ArrayList<Vec3>();
+	public static ArrayList<Vec3> getCube(Vec3 center, float side){
+		ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 		float s = side/2;
 		for(int i=-1; i<=1; i+=2){
 			for(int j=-1; j<=1; j+=2){
