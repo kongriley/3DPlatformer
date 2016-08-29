@@ -218,7 +218,7 @@ public class Draw {
 			
 			keyDown = true;
 			keyNum = e.getKeyCode();
-			keys[e.getKeyCode()] = true;//pressed
+			keys[e.getKeyCode()] = true;
 			if(keys[KeyEvent.VK_SPACE] && grounded){
 				jump=true;
 			}
