@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.Timer;
 public class Draw {
 	boolean keyDown = false;
+	int mul = 1;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
@@ -18,6 +19,7 @@ public class Draw {
 	public static FrameDraw panel;
 	public static BoxCollider playerBox;
 	public static boolean jump = false;
+	public static boolean grounded = false;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
 		prism = new RectPrism(CENTER, 250, 10, 250);
@@ -96,6 +98,8 @@ public class Draw {
 			draw3d(arrays, g);
 			g.setColor(Color.green);
 			drawPoint(CENTER.add(Vec3.DOWN.multiply(100)), g, 50);
+			System.out.println(jump);
+			System.out.println(grounded);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -194,40 +198,47 @@ public class Draw {
 		@Override
 		public void keyTyped(KeyEvent e) {
 //			System.out.println("HUEONGIWVWOGOIJGWKLMFCJEUWIHBHUBWIHFHOBHWROFHJBKWNOENFJFONJKW NOJFNKE WNJOFNJK EWJIODSJEWO");
-			char keyChar = e.getKeyChar();
-			if(keyChar==' '){
-				jump=true;
-			}
 		}
 		int keyNum;
 		@Override
 		public void keyPressed(KeyEvent e) {
 			keyDown = true;
 			keyNum = e.getKeyCode();
-			if(keyNum==KeyEvent.VK_SPACE){
+			if(keyNum==KeyEvent.VK_SPACE && grounded){
 				jump=true;
 			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			keyDown = false;
+			if((keyNum == KeyEvent.VK_W && keyDown)
+			||(keyNum == KeyEvent.VK_S && keyDown)
+			||(keyNum == KeyEvent.VK_A && keyDown)
+			||(keyNum == KeyEvent.VK_D && keyDown)){
+				keyDown = false;
+			}
 		}
 		public void update(){
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
-			
+			if(keyNum == KeyEvent.VK_SHIFT){
+				if(mul == 1){
+					mul = 2;
+				}else if(mul==2){
+					mul = 1;
+				}
+			}
 			if(keyNum == KeyEvent.VK_W && keyDown){
-				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5));
+				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_S && keyDown){
-				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5));
+				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_A && keyDown){
-				Object3d.translateArray(objects, Vec3.LEFT.multiply(5));
+				Object3d.translateArray(objects, Vec3.LEFT.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_D && keyDown){
-				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5));
-			}else if(keyNum == KeyEvent.VK_SPACE && keyDown){
-				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
+				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5*mul));
+			}else if(keyNum == KeyEvent.VK_SPACE && keyDown && grounded){
+				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(5f));
 			}
 		}
 	}

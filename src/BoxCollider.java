@@ -47,10 +47,19 @@ public class BoxCollider {
 			if(isTouching(b)){
 				if(!Draw.jump){
 					Object3d.setVelocityArrayY(objs, 0);
+					Draw.grounded = true;
 				}else{
-					timer.schedule(new setJump(), 100);
+					timer.schedule(new setGrounded(), 40);
+					timer.schedule(new setJump(), 70);
 				}
 			}
+		}
+	}
+	class setGrounded extends TimerTask{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Draw.grounded = false;
 		}
 	}
 	class setJump extends TimerTask{
