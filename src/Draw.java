@@ -127,13 +127,16 @@ public class Draw {
 		}
 		
 		private void draw3d(int[][] arrays, Graphics g){
-			for(int i=0; i<arrays.length; i++){
-				int[] aInt = arrays[i];
-				int[][] aaInt = getArray(prism.vecs, aInt);
-				g.setColor(Color.red);
-				g.fillPolygon(aaInt[0], aaInt[1], aInt.length);
-				g.setColor(Color.black);
-				g.drawPolygon(aaInt[0], aaInt[1], aInt.length);
+			for(int i=0; i<objects.size(); i++){
+				Object3d obj = objects.get(i);
+				for(int j=0; j<arrays.length; j++){
+					int[] aInt = arrays[i];
+					int[][] aaInt = getArray(obj.vecs, aInt);
+					g.setColor(Color.red);
+					g.fillPolygon(aaInt[0], aaInt[1], aInt.length);
+					g.setColor(Color.black);
+					g.drawPolygon(aaInt[0], aaInt[1], aInt.length);
+				}
 			}
 		}
 		private void drawPoint(Vec3 vec, Graphics g){
@@ -158,7 +161,7 @@ public class Draw {
 			int average_len = H/2;
 			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
 			if(z <= -average_len){
-				rInt=(int)100000;
+				rInt=H+1000;
 			}
 			return rInt;
 		}
@@ -240,13 +243,13 @@ public class Draw {
 				}
 			}
 			if(keys[KeyEvent.VK_W] && keyDown){
-				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5*mul));
+				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
 			}if(keys[KeyEvent.VK_S] && keyDown){
-				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5*mul));
+				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
 			}if(keys[KeyEvent.VK_A] && keyDown){
-				Object3d.translateArray(objects, Vec3.LEFT.multiply(5*mul));
+				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_D] && keyDown){
-				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5*mul));
+				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_SPACE] && keyDown && grounded){
 				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
 			}
