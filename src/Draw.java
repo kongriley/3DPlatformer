@@ -215,7 +215,7 @@ public class Draw {
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
+			System.out.println();
 			keyDown = true;
 			keyNum = e.getKeyCode();
 			keys[e.getKeyCode()] = true;//pressed
@@ -239,7 +239,7 @@ public class Draw {
 					mul = 1;
 				}
 			}
-			if(keys[KeyEvent.VK_W] && keyDown){
+			if(keys[KeyEvent.VK_W] && keyDown){ // stage chan
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5*mul));
 			}if(keys[KeyEvent.VK_S] && keyDown){
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5*mul));
