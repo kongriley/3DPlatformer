@@ -74,7 +74,7 @@ public class Object3d {
 	}
 	
 	public static void updateArray(ArrayList<Object3d> objs){
-		System.out.println("Velocity");
+		//System.out.println("Velocity");
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).update();
 		}

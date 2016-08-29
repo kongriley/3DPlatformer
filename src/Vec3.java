@@ -134,6 +134,6 @@ public class Vec3 {
 	}
 	
 	public void print(){
-		System.out.println("X: " + x + " Y: " + y + " Z: " + z);
+		//System.out.println("X: " + x + " Y: " + y + " Z: " + z);
 	}
 }
