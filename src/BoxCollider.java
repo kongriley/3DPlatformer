@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class BoxCollider {
 	Vec3 vec1;
 	Vec3 vec2;
-
+	Timer timer = new Timer();
 	BoxCollider(Vec3 vec1, Vec3 vec2){
 		this.vec1 = vec1;
 		this.vec2 = vec2;
@@ -43,7 +44,9 @@ public class BoxCollider {
 		}
 		for(BoxCollider b:array){
 			if(isTouching(b)){
-				Object3d.setVelocityArrayY(objs, 0);
+				if(!Draw.jump){
+					Object3d.setVelocityArrayY(objs, 0);
+				}
 			}
 		}
 	}

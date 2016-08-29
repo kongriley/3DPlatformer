@@ -17,6 +17,7 @@ public class Draw {
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
 	public static BoxCollider playerBox;
+	public static boolean jump = false;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
 		prism = new RectPrism(CENTER, 250, 10, 250);
@@ -80,20 +81,21 @@ public class Draw {
 //				System.out.println("}");
 //			}
 			
-//			g.setColor(Color.red);
-//			drawPoint(CENTER, g);
-//			g.setColor(Color.black);
-//			g.drawChars("Center".toCharArray(), 0, "Center".length(), getX(CENTER.x, CENTER.z), getY(CENTER.y, CENTER.z));
-			
-			for (int i = 0; i < prism.size(); i++) {
-				Vec3 vec = (Vec3) prism.get(i);
-				vec.print();
-				drawPoint(vec, g);
-				char[] charAr = {Integer.toString(i).charAt(0)};
-				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+			g.setColor(Color.black);
+			for(int j=0; j<objects.size(); j++){
+				Object3d obj = objects.get(j);
+				for (int i = 0; i < obj.size(); i++) {
+					Vec3 vec = (Vec3) obj.get(i);
+					vec.print();
+					drawPoint(vec, g);
+					char[] charAr = {Integer.toString(i).charAt(0)};
+					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+				}
 			}
 			System.out.println("\n\n");
 			draw3d(arrays, g);
+			g.setColor(Color.green);
+			drawPoint(CENTER.add(Vec3.DOWN.multiply(100)), g, 50);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -122,23 +124,27 @@ public class Draw {
 		private void drawPoint(Vec3 vec, Graphics g){
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
+		private void drawPoint(Vec3 vec, Graphics g, int size){
+			g.fillRect(getX(vec.x-size/2, vec.z), getY(vec.y-size/2, vec.z), size, size);
+		}
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
 			int average_len = W/2;
 			
-			int rInt = (int) ((( x-W/2) * ( average_len / 2 ) ) / ( z + ( average_len / 2 ) )) + W/2;
+			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( average_len) )) + W/2;
 
-//			if(x+100 < W/2){
-//				rInt-=W/4;
-//			}else if(x-100 > W/2){
-//				rInt+=W/4;
-//			}
+			if(z <= -average_len){
+				rInt=(int)x;
+			}
 			return rInt;
 		}
 		private int getY(float y, float z){
 //			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
 			int average_len = H/2;
-			int rInt = (int) (((y-H/2) * ( average_len / 2 ) ) / ( z + ( average_len / 2 ) )) + H/2;
+			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
+			if(z <= -average_len){
+				rInt=(int)100000;
+			}
 			return rInt;
 		}
 		private int[][] sortFaces(int[][] arrays){
@@ -188,12 +194,19 @@ public class Draw {
 		@Override
 		public void keyTyped(KeyEvent e) {
 //			System.out.println("HUEONGIWVWOGOIJGWKLMFCJEUWIHBHUBWIHFHOBHWROFHJBKWNOENFJFONJKW NOJFNKE WNJOFNJK EWJIODSJEWO");
+			char keyChar = e.getKeyChar();
+			if(keyChar==' '){
+				jump=true;
+			}
 		}
 		int keyNum;
 		@Override
 		public void keyPressed(KeyEvent e) {
 			keyDown = true;
 			keyNum = e.getKeyCode();
+			if(keyNum==KeyEvent.VK_SPACE){
+				jump=true;
+			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
@@ -213,6 +226,8 @@ public class Draw {
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(5));
 			}else if(keyNum == KeyEvent.VK_D && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5));
+			}else if(keyNum == KeyEvent.VK_SPACE && keyDown){
+				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
 			}
 		}
 	}
