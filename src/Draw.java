@@ -228,6 +228,7 @@ public class Draw {
 			keys[e.getKeyCode()] = false;//released
 		}
 		public void update(){
+			
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
