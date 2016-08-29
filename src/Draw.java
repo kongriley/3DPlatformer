@@ -225,7 +225,7 @@ public class Draw {
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			keys[e.getKeyCode()] = false;
+			keys[e.getKeyCode()] = false;//released
 		}
 		public void update(){
 			panel.requestFocus();
