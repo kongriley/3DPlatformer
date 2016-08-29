@@ -215,7 +215,7 @@ public class Draw {
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println();
+			
 			keyDown = true;
 			keyNum = e.getKeyCode();
 			keys[e.getKeyCode()] = true;//pressed
@@ -225,10 +225,9 @@ public class Draw {
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			keys[e.getKeyCode()] = false;//released
+			keys[e.getKeyCode()] = false;
 		}
 		public void update(){
-			
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
@@ -240,7 +239,7 @@ public class Draw {
 					mul = 1;
 				}
 			}
-			if(keys[KeyEvent.VK_W] && keyDown){ // stage chan
+			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5*mul));
 			}if(keys[KeyEvent.VK_S] && keyDown){
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5*mul));
