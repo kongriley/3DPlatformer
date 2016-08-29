@@ -13,6 +13,7 @@ public class Draw {
 	ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	static ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	RectPrism prism;
+	RectPrism prism2;
 	public static int W = 1000;
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
@@ -23,10 +24,13 @@ public class Draw {
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
 		prism = new RectPrism(CENTER, 250, 10, 250);
+		prism2 = new RectPrism(CENTER, 250, 10, 250);
 		objects.add(prism);
-		prism.translate(new Vec3(0, 200, 0));
+		objects.add(prism2);
+		prism.translate(new Vec3(0, 200, -300));
+		prism2.translate(new Vec3(0, 200, 300));
 //		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
-		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 100, 0)), CENTER.add(new Vec3(1, 100, 1)));
+		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 1, 1)));
 		JFrame frame = new JFrame();
 		
 		panel = new FrameDraw();
@@ -238,7 +242,7 @@ public class Draw {
 			}else if(keyNum == KeyEvent.VK_D && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_SPACE && keyDown && grounded){
-				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(5f));
+				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
 			}
 		}
 	}
