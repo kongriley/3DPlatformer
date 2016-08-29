@@ -130,7 +130,7 @@ public class Draw {
 			for(int i=0; i<objects.size(); i++){
 				Object3d obj = objects.get(i);
 				for(int j=0; j<arrays.length; j++){
-					int[] aInt = arrays[i];
+					int[] aInt = arrays[j];
 					int[][] aaInt = getArray(obj.vecs, aInt);
 					g.setColor(Color.red);
 					g.fillPolygon(aaInt[0], aaInt[1], aInt.length);
