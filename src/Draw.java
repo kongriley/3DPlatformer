@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.Timer;
 public class Draw {
 	boolean keyDown = false;
+	int mul = 1;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
@@ -12,25 +13,25 @@ public class Draw {
 	ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	static ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	RectPrism prism;
+	RectPrism prism2;
 	public static int W = 1000;
 	public static int H = 1000;
 	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
-	public static JLabel label;
 	public static BoxCollider playerBox;
+	public static boolean jump = false;
+	public static boolean grounded = false;
 	Draw() {
 		vecs = Vec3.getCube(CENTER, 100);
 		prism = new RectPrism(CENTER, 250, 10, 250);
+		prism2 = new RectPrism(CENTER, 250, 10, 250);
 		objects.add(prism);
-		prism.translate(new Vec3(0, 200, 0));
+		objects.add(prism2);
+		prism.translate(new Vec3(0, 200, -300));
+		prism2.translate(new Vec3(0, 200, 300));
 //		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
-		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 100, 0)), CENTER.add(new Vec3(1, 100, 1)));
+		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 1, 1)));
 		JFrame frame = new JFrame();
-		
-		label = new JLabel("X: 0, Y:0, Z:0");
-		label.setOpaque(true);
-	    label.setBackground(Color.GRAY);
-	    label.setForeground(Color.WHITE);
 		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
@@ -39,7 +40,6 @@ public class Draw {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(label, BorderLayout.NORTH);
 		frame.add(panel, BorderLayout.CENTER);
 		
 		(panel).paintComponent(panel.getGraphics());
@@ -63,7 +63,7 @@ public class Draw {
 	
 	@SuppressWarnings("serial")
 	class FrameDraw extends JPanel implements KeyListener{
-		public static final long MAX_DIST = 200l;
+		public static final long MAX_DIST = 1l;
 		FrameDraw(){
 			addKeyListener(this);
 		}
@@ -87,20 +87,23 @@ public class Draw {
 //				System.out.println("}");
 //			}
 			
-//			g.setColor(Color.red);
-//			drawPoint(CENTER, g);
-//			g.setColor(Color.black);
-//			g.drawChars("Center".toCharArray(), 0, "Center".length(), getX(CENTER.x, CENTER.z), getY(CENTER.y, CENTER.z));
-			
-			for (int i = 0; i < prism.size(); i++) {
-				Vec3 vec = (Vec3) prism.get(i);
-				vec.print();
-				drawPoint(vec, g);
-				char[] charAr = {Integer.toString(i).charAt(0)};
-				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+			g.setColor(Color.black);
+			for(int j=0; j<objects.size(); j++){
+				Object3d obj = objects.get(j);
+				for (int i = 0; i < obj.size(); i++) {
+					Vec3 vec = (Vec3) obj.get(i);
+					vec.print();
+					drawPoint(vec, g);
+					char[] charAr = {Integer.toString(i).charAt(0)};
+					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+				}
 			}
 			System.out.println("\n\n");
 			draw3d(arrays, g);
+			g.setColor(Color.green);
+			drawPoint(CENTER.add(Vec3.DOWN.multiply(100)), g, 50);
+			System.out.println(jump);
+			System.out.println(grounded);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -129,17 +132,28 @@ public class Draw {
 		private void drawPoint(Vec3 vec, Graphics g){
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
+		private void drawPoint(Vec3 vec, Graphics g, int size){
+			g.fillRect(getX(vec.x-size/2, vec.z), getY(vec.y-size/2, vec.z), size, size);
+		}
 		private int getX(float x, float z){
-			int rInt = (int)((x - (x - W/2)*z/MAX_DIST));
-			if(x < W/2){
-				rInt-=W/4;
-			}else if(x > W/2){
-				rInt+=W/4;
+//			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
+			int average_len = W/2;
+			
+			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( average_len) )) + W/2;
+
+			if(z <= -average_len){
+				rInt=(int)x;
 			}
 			return rInt;
 		}
 		private int getY(float y, float z){
-			return (int)((y - (y - H/2)*z/MAX_DIST)+H/20);
+//			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
+			int average_len = H/2;
+			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
+			if(z <= -average_len){
+				rInt=(int)100000;
+			}
+			return rInt;
 		}
 		private int[][] sortFaces(int[][] arrays){
 
@@ -194,25 +208,41 @@ public class Draw {
 		public void keyPressed(KeyEvent e) {
 			keyDown = true;
 			keyNum = e.getKeyCode();
+			if(keyNum==KeyEvent.VK_SPACE && grounded){
+				jump=true;
+			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			keyDown = false;
+			if((keyNum == KeyEvent.VK_W && keyDown)
+			||(keyNum == KeyEvent.VK_S && keyDown)
+			||(keyNum == KeyEvent.VK_A && keyDown)
+			||(keyNum == KeyEvent.VK_D && keyDown)){
+				keyDown = false;
+			}
 		}
 		public void update(){
-
+			panel.requestFocus();
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
-			
+			if(keyNum == KeyEvent.VK_SHIFT){
+				if(mul == 1){
+					mul = 2;
+				}else if(mul==2){
+					mul = 1;
+				}
+			}
 			if(keyNum == KeyEvent.VK_W && keyDown){
-				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5));
+				Object3d.translateArray(objects, Vec3.FORWARD.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_S && keyDown){
-				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5));
+				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_A && keyDown){
-				Object3d.translateArray(objects, Vec3.LEFT.multiply(5));
+				Object3d.translateArray(objects, Vec3.LEFT.multiply(5*mul));
 			}else if(keyNum == KeyEvent.VK_D && keyDown){
-				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5));
+				Object3d.translateArray(objects, Vec3.RIGHT.multiply(5*mul));
+			}else if(keyNum == KeyEvent.VK_SPACE && keyDown && grounded){
+				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
 			}
 		}
 	}

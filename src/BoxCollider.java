@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BoxCollider {
 	Vec3 vec1;
 	Vec3 vec2;
-
+	Timer timer = new Timer();
 	BoxCollider(Vec3 vec1, Vec3 vec2){
 		this.vec1 = vec1;
 		this.vec2 = vec2;
@@ -45,8 +47,28 @@ public class BoxCollider {
 		}
 		for(BoxCollider b:array){
 			if(isTouching(b)){
-				Object3d.setVelocityArrayY(objs, 0);
+				if(!Draw.jump){
+					Object3d.setVelocityArrayY(objs, 0);
+					Draw.grounded = true;
+				}else{
+					timer.schedule(new setGrounded(), 40);
+					timer.schedule(new setJump(), 70);
+				}
 			}
+		}
+	}
+	class setGrounded extends TimerTask{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Draw.grounded = false;
+		}
+	}
+	class setJump extends TimerTask{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Draw.jump = false;
 		}
 	}
 }
