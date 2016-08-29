@@ -29,15 +29,17 @@ public class BoxCollider {
 //			return false;
 //		}
 		if (
-				!((((A1.x<B1.x && A2.x<B1.x) ^ (A1.x>B1.x && A2.x>B1.x))  &&  
-				((A1.y<B1.y && A2.y<B1.y) ^ (A1.y>B1.y && A2.y>B1.y)))
+				(((A1.x<B1.x && A2.x<B1.x) ^ (A1.x>B1.x && A2.x>B1.x))  &&  
+				((A1.y<B1.y && A2.y<B1.y) ^ (A1.y>B1.y && A2.y>B1.y)) &&
+				(A1.z<B1.z && A2.z<B1.z) ^ (A1.z>B1.z && A2.z>B1.z))
 				||
 				(((B1.x<A1.x && B2.x<A1.x) ^ (B1.x>A1.x && B2.x>A1.x))  &&  
-				((B1.y<A1.y && B2.y<A1.y) ^ (B1.y>A1.y && B2.y>A1.y))))
+				((B1.y<A1.y && B2.y<A1.y) ^ (B1.y>A1.y && B2.y>A1.y)) &&
+				((B1.z<A1.z && B2.z<A1.z) ^ (B1.z>A1.z && B2.z>A1.z)))
 				){
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	public void isTouchingArrayGrav(ArrayList objs){
