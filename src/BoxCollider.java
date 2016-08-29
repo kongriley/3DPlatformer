@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class BoxCollider {
 	Vec3 vec1;
@@ -46,8 +47,17 @@ public class BoxCollider {
 			if(isTouching(b)){
 				if(!Draw.jump){
 					Object3d.setVelocityArrayY(objs, 0);
+				}else{
+					timer.schedule(new setJump(), 100);
 				}
 			}
+		}
+	}
+	class setJump extends TimerTask{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Draw.jump = false;
 		}
 	}
 }
