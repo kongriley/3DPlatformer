@@ -15,9 +15,9 @@ public class Draw {
 	static ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	RectPrism prism;
 	RectPrism prism2;
-	public static int W = 1000;
-	public static int H = 1000;
-	public static Vec3 CENTER = new Vec3(W/2, H/2, 0);
+	public static int W = 900;
+	public static int H = 900;
+	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public static FrameDraw panel;
 	public static BoxCollider playerBox;
 	public static boolean jump = false;
@@ -34,16 +34,16 @@ public class Draw {
 		prism2 = new RectPrism(CENTER, 250, 10, 250);
 		objects.add(prism);
 		objects.add(prism2);
-		prism.translate(new Vec3(0, 200, -300));
-		prism2.translate(new Vec3(0, 200, 300));
+		prism.translate(new Vec3(0, 200, 0));
+		prism2.translate(new Vec3(0, 200, 500));
 //		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
-		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 1, 1)));
+		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
 		JFrame frame = new JFrame();
 		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
 		
-		frame.setPreferredSize(new Dimension(W, H));
+		frame.setPreferredSize(new Dimension(W, H + 50));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -108,7 +108,7 @@ public class Draw {
 			//System.out.println("\n\n");
 			draw3d(arrays, g);
 			g.setColor(Color.green);
-			drawPoint(CENTER.add(Vec3.DOWN.multiply(100)), g, 50);
+			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
 			//System.out.println(jump);
 			//System.out.println(grounded);
 		}
@@ -142,8 +142,8 @@ public class Draw {
 		private void drawPoint(Vec3 vec, Graphics g){
 			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
 		}
-		private void drawPoint(Vec3 vec, Graphics g, int size){
-			g.fillRect(getX(vec.x-size/2, vec.z), getY(vec.y-size/2, vec.z), size, size);
+		private void drawPlayerPoint(Vec3 vec, Graphics g, int size){
+			g.fillRect((int)(vec.x - size/2), (int)(vec.y-size/2), size, size);
 		}
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
@@ -152,20 +152,17 @@ public class Draw {
 			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( average_len) )) + W/2;
 
 			if(z <= -average_len){
-				if(x>W/2){
-					rInt=(int)W;
-				}else{
-					rInt=(int)0;
-				}
+				rInt = (int) (((x-W/2) * ( average_len ) ) / (150)) + W/2;
 			}
 			return rInt;
 		}
 		private int getY(float y, float z){
 //			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
 			int average_len = H/2;
+			y+= 175;
 			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
 			if(z <= -average_len){
-				rInt=H;
+				rInt=(int) ((y*4)-1450);
 			}
 			return rInt;
 		}

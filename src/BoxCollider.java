@@ -28,18 +28,39 @@ public class BoxCollider {
 //		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
 //			return false;
 //		}
-		if (
-				(((A1.x<B1.x && A2.x<B1.x) ^ (A1.x>B1.x && A2.x>B1.x))  &&  
-				((A1.y<B1.y && A2.y<B1.y) ^ (A1.y>B1.y && A2.y>B1.y)) &&
-				(A1.z<B1.z && A2.z<B1.z) ^ (A1.z>B1.z && A2.z>B1.z))
-				||
-				(((B1.x<A1.x && B2.x<A1.x) ^ (B1.x>A1.x && B2.x>A1.x))  &&  
-				((B1.y<A1.y && B2.y<A1.y) ^ (B1.y>A1.y && B2.y>A1.y)) &&
-				((B1.z<A1.z && B2.z<A1.z) ^ (B1.z>A1.z && B2.z>A1.z)))
-				){
-			return false;
+//		if(
+//			(A1.x < B1.x && A2.x< B1.x)
+//				){
+//			
+//		}
+		int touching = 0;
+		if((A1.x<B1.x && A2.x>B1.x) || (A1.x>B1.x && A2.x<B1.x)){
+			//System.out.println("x");
+			touching++;
 		}
-		return true;
+		if(((A1.y<B1.y && A2.y>B1.y) || (A1.y>B1.y && A2.y<B1.y))){
+			//System.out.println("y");
+			touching++;
+		}
+		System.out.println("A1 " + A1.z + " B1 " + B1.z + " A2 " + A2.z);
+		if(((A1.z<B1.z && A2.z>B1.z) || (A1.z>B1.z && A2.z<B1.z))){
+			touching++;
+		}
+		if(touching == 3){
+			return true;
+		}
+		if (
+				((((A1.x<B1.x && A2.x<B1.x) || (A1.x>B1.x && A2.x>B1.x))  &&  
+				((A1.y<B1.y && A2.y<B1.y) || (A1.y>B1.y && A2.y>B1.y))) &&
+				(A1.z<B1.z && A2.z<B1.z) || (A1.z>B1.z && A2.z>B1.z))
+//				||
+//				(((B1.x<A1.x && B2.x<A1.x) && (B1.x>A1.x && B2.x>A1.x))  &&  
+//				((B1.y<A1.y && B2.y<A1.y) && (B1.y>A1.y && B2.y>A1.y)) &&
+//				!((B1.z<A1.z && B2.z<A1.z) && (B1.z>A1.z && B2.z>A1.z)))
+				){
+//			return true;
+		}
+		return false;
 	}
 	
 	public void isTouchingArrayGrav(ArrayList objs){
