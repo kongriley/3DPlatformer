@@ -42,7 +42,6 @@ public class BoxCollider {
 			//System.out.println("y");
 			touching++;
 		}
-		//System.out.println("A1 " + A1.z + " B1 " + B1.z + " A2 " + A2.z);
 		if(((A1.z<B1.z && A2.z>B1.z) || (A1.z>B1.z && A2.z<B1.z))){
 			touching++;
 		}

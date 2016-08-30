@@ -13,8 +13,6 @@ public class Draw {
 	public static String rotMode = "x";
 	ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	static ArrayList<Vec3> vecs = new ArrayList<Vec3>();
-	RectPrism prism;
-	RectPrism prism2;
 	public static int W = 900;
 	public static int H = 900;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
@@ -22,6 +20,7 @@ public class Draw {
 	public static BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
+	int objNum = 8;
 	static boolean[] keys;
 	
 	@SuppressWarnings("null")
@@ -30,12 +29,11 @@ public class Draw {
 			keys = new boolean[i];
 		}
 		vecs = Vec3.getCube(CENTER, 100);
-		prism = new RectPrism(CENTER, 250, 10, 250);
-		prism2 = new RectPrism(CENTER, 250, 10, 250);
-		objects.add(prism);
-		objects.add(prism2);
-		prism.translate(new Vec3(0, 200, 0));
-		prism2.translate(new Vec3(0, 200, 500));
+		for(int i=objNum-1; i>=0; i--){
+			RectPrism p = new RectPrism(CENTER, 250, 100, 250);
+			p.translate(new Vec3(0, 200, 500*i));
+			objects.add(p);
+		}
 //		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
 		JFrame frame = new JFrame();
@@ -99,7 +97,7 @@ public class Draw {
 				Object3d obj = objects.get(j);
 				for (int i = 0; i < obj.size(); i++) {
 					Vec3 vec = (Vec3) obj.get(i);
-					vec.print();
+//					vec.print();
 					drawPoint(vec, g);
 					char[] charAr = {Integer.toString(i).charAt(0)};
 					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
@@ -167,17 +165,17 @@ public class Draw {
 			return rInt;
 		}
 		private int[][] sortFaces(int[][] arrays){
-
+			Object3d obj = objects.get(0);
 			Integer[] VecsMidZ = new Integer[arrays.length];
 			for(int i=0; i<arrays.length; i++){
 				Vec3 vec1 = new Vec3(0,0,0);
-				vec1.x = ((Vec3)prism.get(arrays[i][0])).x;
-				vec1.y = ((Vec3)prism.get(arrays[i][0])).y;
-				vec1.z = ((Vec3)prism.get(arrays[i][0])).z;
+				vec1.x = ((Vec3)obj.get(arrays[i][0])).x;
+				vec1.y = ((Vec3)obj.get(arrays[i][0])).y;
+				vec1.z = ((Vec3)obj.get(arrays[i][0])).z;
 				Vec3 vec2 = new Vec3(0,0,0);//(Vec3) vecs.get(arrays[i][2]);
-				vec2.x = ((Vec3)prism.get(arrays[i][2])).x;
-				vec2.y = ((Vec3)prism.get(arrays[i][2])).y;
-				vec2.z = ((Vec3)prism.get(arrays[i][2])).z;
+				vec2.x = ((Vec3)obj.get(arrays[i][2])).x;
+				vec2.y = ((Vec3)obj.get(arrays[i][2])).y;
+				vec2.z = ((Vec3)obj.get(arrays[i][2])).z;
 				Vec3.midpoint(vec1, vec2);
 				
 				VecsMidZ[i]=(Integer)(int) vec1.z;
@@ -241,7 +239,7 @@ public class Draw {
 				ticks --;
 			}
 			panel.requestFocus();
-			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
+			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.64f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;
@@ -258,7 +256,8 @@ public class Draw {
 			}if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_SPACE] && keyDown && grounded){
-				Object3d.setVelocityArray(objects, new Vec3(0, 1, 0).multiply(10f));
+				Vec3 jumpVec = new Vec3(0, 10, 0);
+				Object3d.addVelocityArray(objects, jumpVec);
 			}
 		}
 	}
