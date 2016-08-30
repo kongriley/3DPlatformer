@@ -20,7 +20,7 @@ public class Draw {
 	public static BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
-	int objNum = 10;
+	int objNum = 8;
 	static boolean[] keys;
 	
 	@SuppressWarnings("null")
@@ -231,7 +231,7 @@ public class Draw {
 		}
 		public void update(){
 			panel.requestFocus();
-			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.32f));//gravity happens to be 0.32 units be second
+			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.64f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			if(keyNum == KeyEvent.VK_SHIFT){
@@ -251,8 +251,7 @@ public class Draw {
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_SPACE] && keyDown && grounded){
 				Vec3 jumpVec = new Vec3(0, 10, 0);
-				Object3d.setVelocityArray(objects, jumpVec);
-				jumpVec.print();
+				Object3d.addVelocityArray(objects, jumpVec);
 			}
 		}
 	}

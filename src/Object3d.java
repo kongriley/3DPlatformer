@@ -18,7 +18,6 @@ public class Object3d {
 	
 	public void update(){
 		translate(velocity);
-		velocity.print();
 	}
 	
 	public void addVelocity(Vec3 vec){
