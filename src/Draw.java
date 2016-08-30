@@ -215,7 +215,7 @@ public class Draw {
 
 		}
 		int keyNum;
-		
+		int ticks = 0;
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -229,19 +229,25 @@ public class Draw {
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
+			if(keys[KeyEvent.VK_W] && keyDown){
+				ticks = 5;
+				System.out.println("HI");
+			}
 			keys[e.getKeyCode()] = false;
+			
 		}
 		public void update(){
+			if(ticks > 0 && mul == 1){
+				ticks --;
+			}
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, Vec3.UP.multiply(0.32f));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
-			if(keyNum == KeyEvent.VK_SHIFT){
-				if(mul == 1){
-					mul = 2;
-				}else if(mul==2){
-					mul = 1;
-				}
+			mul = 1;
+			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0){
+				mul = 2;
+				System.out.println(ticks);
 			}
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
