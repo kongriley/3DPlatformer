@@ -30,6 +30,11 @@ public class Draw {
 			keys = new boolean[i];
 		}
 		vecs = Vec3.getCube(CENTER, 100);
+		for(int i=0; i<5; i++){
+			RectPrism p = new RectPrism(CENTER, 250, 100, 250);
+			p.translate(new Vec3(0, 200, 500*i + 1000));
+			objects.add(p);
+		}
 		prism = new RectPrism(CENTER, 250, 10, 250);
 		prism2 = new RectPrism(CENTER, 250, 10, 250);
 		objects.add(prism);
