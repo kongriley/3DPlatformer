@@ -152,7 +152,11 @@ public class Draw {
 			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( average_len) )) + W/2;
 
 			if(z <= -average_len){
-				rInt=(int)x;
+				if(x>W/2){
+					rInt=(int)W;
+				}else{
+					rInt=(int)0;
+				}
 			}
 			return rInt;
 		}
@@ -161,7 +165,7 @@ public class Draw {
 			int average_len = H/2;
 			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
 			if(z <= -average_len){
-				rInt=H+1000;
+				rInt=H;
 			}
 			return rInt;
 		}
