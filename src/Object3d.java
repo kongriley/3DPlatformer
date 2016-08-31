@@ -73,7 +73,6 @@ public class Object3d {
 	}
 	
 	public static void updateArray(ArrayList<Object3d> objs){
-		//System.out.println("Velocity");
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).update();
 		}
@@ -82,7 +81,6 @@ public class Object3d {
 	public static void addVelocityArray(ArrayList<Object3d> objs, Vec3 vec){
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).addVelocity(vec);
-//			vec.print();
 		}
 	}
 	

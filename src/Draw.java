@@ -37,7 +37,6 @@ public class Draw {
 			p.translate(new Vec3(0, 200, 500*i));
 			objects.add(p);
 		}
-//		playerBox = new BoxCollider(CENTER.add(Vec3.BACKWARD.multiply(50)), CENTER.add(Vec3.BACKWARD.multiply(50)));
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
 		JFrame frame = new JFrame();
 		
@@ -59,7 +58,6 @@ public class Draw {
 	class DoStuff extends TimerTask{
 		@Override
 		public void run() {
-			//Vec3.dilateArray(vecs, CENTER, 0.99f);
 			(panel).repaint();
 		}
 	}
@@ -87,31 +85,19 @@ public class Draw {
 			int[][] arrays = {a1, a2, a3, a4, a5, a6};
 			arrays = sortFaces(arrays);
 			
-//			for(int[] i:arrays){
-//				System.out.print("{");
-//				for(int a:i){
-//					System.out.print((prism.get(a)).z + ",");
-//				}
-//				System.out.println("}");
-//			}
-			
 			g.setColor(Color.black);
 			for(int j=0; j<objects.size(); j++){
 				Object3d obj = objects.get(j);
 				for (int i = 0; i < obj.size(); i++) {
 					Vec3 vec = (Vec3) obj.get(i);
-//					vec.print();
 					drawPoint(vec, g);
 					char[] charAr = {Integer.toString(i).charAt(0)};
 					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
 				}
 			}
-			//System.out.println("\n\n");
 			draw3d(arrays, g);
 			g.setColor(Color.green);
 			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
-			//System.out.println(jump);
-			//System.out.println(grounded);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -200,7 +186,6 @@ public class Draw {
 			for(int i=0; i<arrays.length; i++){
 				int mod = VecsMidZ[i]%10;
 				if (mod<0) mod += 10;
-//				System.out.println(mod);
 				arrays[i] = temp[mod];
 			}
 			
@@ -224,9 +209,9 @@ public class Draw {
 			keyDown = true;
 			keyNum = e.getKeyCode();
 			keys[e.getKeyCode()] = true;//pressed
-			if(keys[KeyEvent.VK_SPACE] && toggled){
+			if(keys[KeyEvent.VK_SPACE] && /*toggled*/ grounded){
 				jump=true;
-				BoxCollider.timer.schedule(new setToggled(), 40);
+//				BoxCollider.timer.schedule(new setToggled(), 40);
 			}
 		}
 		class setToggled extends TimerTask{
@@ -254,20 +239,19 @@ public class Draw {
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;
-			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0){
+			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0 || keys[KeyEvent.VK_R]){
 				mul = 2;
-//				System.out.println(ticks);
 			}
 			mul*=rate;
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
-			}if(keys[KeyEvent.VK_S] && keyDown){
+			}else if(keys[KeyEvent.VK_S] && keyDown){
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
-			}if(keys[KeyEvent.VK_A] && keyDown){
+			}else if(keys[KeyEvent.VK_A] && keyDown){
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
-			}if(keys[KeyEvent.VK_D] && keyDown){
+			}else if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
-			}if(keys[KeyEvent.VK_SPACE] && keyDown && toggled){
+			}else if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}

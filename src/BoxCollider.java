@@ -18,46 +18,10 @@ public class BoxCollider {
 		Vec3 A1 = b.vec1;
 		Vec3 A2 = b.vec2;
 		
-//		if (!(B1.x > A1.x+A2.x || B1.x+B2.x < A1.x ||
-//		        B1.y > A1.y+A2.y || B1.y+B2.y < A1.y ||
-//		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
-//			return true;
-//		}
-//		if (!(B1.x > A1.x+A2.x || B1.x+B2.x < A1.x ||
-//		        B1.y > A1.y+A2.y || B1.y+B2.y < A1.y ||
-//		        B1.z > A1.z+A2.z || B1.z+B2.z < A1.z)){
-//			return false;
-//		}
-//		if(
-//			(A1.x < B1.x && A2.x< B1.x)
-//				){
-//			
-//		}
-		int touching = 0;
-		if((A1.x<B1.x && A2.x>B1.x) || (A1.x>B1.x && A2.x<B1.x)){
-			//System.out.println("x");
-			touching++;
-		}
-		if(((A1.y<B1.y && A2.y>B1.y) || (A1.y>B1.y && A2.y<B1.y))){
-			//System.out.println("y");
-			touching++;
-		}
-		if(((A1.z<B1.z && A2.z>B1.z) || (A1.z>B1.z && A2.z<B1.z))){
-			touching++;
-		}
-		if(touching == 3){
+		if(((A1.x<B1.x && A2.x>B1.x) || (A1.x>B1.x && A2.x<B1.x)) &&
+			((A1.y<B1.y && A2.y>B1.y) || (A1.y>B1.y && A2.y<B1.y)) &&
+			((A1.z<B1.z && A2.z>B1.z) || (A1.z>B1.z && A2.z<B1.z))){
 			return true;
-		}
-		if (
-				((((A1.x<B1.x && A2.x<B1.x) || (A1.x>B1.x && A2.x>B1.x))  &&  
-				((A1.y<B1.y && A2.y<B1.y) || (A1.y>B1.y && A2.y>B1.y))) &&
-				(A1.z<B1.z && A2.z<B1.z) || (A1.z>B1.z && A2.z>B1.z))
-//				||
-//				(((B1.x<A1.x && B2.x<A1.x) && (B1.x>A1.x && B2.x>A1.x))  &&  
-//				((B1.y<A1.y && B2.y<A1.y) && (B1.y>A1.y && B2.y>A1.y)) &&
-//				!((B1.z<A1.z && B2.z<A1.z) && (B1.z>A1.z && B2.z>A1.z)))
-				){
-//			return true;
 		}
 		return false;
 	}
@@ -72,8 +36,8 @@ public class BoxCollider {
 				if(!Draw.jump){
 					Object3d.setVelocityArrayY(objs, 0);
 					Draw.grounded = true;
-					Draw.toggled = true;
-					Draw.toggled = false;
+//					Draw.toggled = true;
+//					Draw.toggled = false;
 				}else{
 					timer.schedule(new setVals(), 40);
 				}
