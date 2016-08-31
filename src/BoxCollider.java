@@ -5,7 +5,7 @@ import java.util.TimerTask;
 public class BoxCollider {
 	Vec3 vec1;
 	Vec3 vec2;
-	Timer timer = new Timer();
+	static Timer timer = new Timer();
 	BoxCollider(Vec3 vec1, Vec3 vec2){
 		this.vec1 = vec1;
 		this.vec2 = vec2;
@@ -72,6 +72,8 @@ public class BoxCollider {
 				if(!Draw.jump){
 					Object3d.setVelocityArrayY(objs, 0);
 					Draw.grounded = true;
+					Draw.toggled = true;
+					Draw.toggled = false;
 				}else{
 					timer.schedule(new setGrounded(), 40);
 					timer.schedule(new setJump(), 70);

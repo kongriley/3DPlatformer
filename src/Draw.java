@@ -20,6 +20,7 @@ public class Draw {
 	public static BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
+	public static boolean toggled = false;
 	int objNum = 8;
 	public static float frameRate = 10;
 	public static float rate = frameRate/30;
@@ -223,8 +224,16 @@ public class Draw {
 			keyDown = true;
 			keyNum = e.getKeyCode();
 			keys[e.getKeyCode()] = true;//pressed
-			if(keys[KeyEvent.VK_SPACE] && grounded){
+			if(keys[KeyEvent.VK_SPACE] && toggled){
 				jump=true;
+				BoxCollider.timer.schedule(new setToggled(), 40);
+			}
+		}
+		class setToggled extends TimerTask{
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Draw.toggled = false;
 			}
 		}
 		@Override
@@ -259,7 +268,7 @@ public class Draw {
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
-			}if(keys[KeyEvent.VK_SPACE] && keyDown && grounded){
+			}if(keys[KeyEvent.VK_SPACE] && keyDown && toggled){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}
