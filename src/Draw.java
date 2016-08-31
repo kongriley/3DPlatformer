@@ -6,7 +6,7 @@ import java.util.Timer;
 public class Draw {
 	
 	boolean keyDown = false;
-	int mul = 1;
+	float mul = 1;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
@@ -21,6 +21,8 @@ public class Draw {
 	public static boolean jump = false;
 	public static boolean grounded = false;
 	int objNum = 8;
+	public static float frameRate = 10;
+	public static float rate = frameRate/30;
 	static boolean[] keys;
 	
 	@SuppressWarnings("null")
@@ -30,7 +32,7 @@ public class Draw {
 		}
 		vecs = Vec3.getCube(CENTER, 100);
 		for(int i=objNum-1; i>=0; i--){
-			RectPrism p = new RectPrism(CENTER, 250, 100, 250);
+			RectPrism p = new RectPrism(CENTER, 250, 10, 250);
 			p.translate(new Vec3(0, 200, 500*i));
 			objects.add(p);
 		}
@@ -51,7 +53,7 @@ public class Draw {
 		
 		frame.pack();
 		Timer t = new Timer();
-		t.schedule(new DoStuff(), 0, 30);
+		t.schedule(new DoStuff(), 0, (long) frameRate);
 	}
 	class DoStuff extends TimerTask{
 		@Override
@@ -229,7 +231,7 @@ public class Draw {
 		public void keyReleased(KeyEvent e) {
 			if(keys[KeyEvent.VK_W] && keyDown){
 				ticks = 5;
-				System.out.println("HI");
+//				System.out.println("HI");
 			}
 			keys[e.getKeyCode()] = false;
 			
@@ -239,14 +241,16 @@ public class Draw {
 				ticks --;
 			}
 			panel.requestFocus();
-			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.64f));//gravity happens to be 0.32 units be second
+			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.64f*rate));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;
 			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0){
 				mul = 2;
-				System.out.println(ticks);
+//				System.out.println(ticks);
 			}
+			mul*=rate;
+			System.out.println(rate);
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
 			}if(keys[KeyEvent.VK_S] && keyDown){
@@ -256,8 +260,8 @@ public class Draw {
 			}if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 			}if(keys[KeyEvent.VK_SPACE] && keyDown && grounded){
-				Vec3 jumpVec = new Vec3(0, 10, 0);
-				Object3d.addVelocityArray(objects, jumpVec);
+				Vec3 jumpVec = new Vec3(0, 5, 0);
+				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}
 		}
 	}
