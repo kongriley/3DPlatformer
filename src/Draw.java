@@ -232,7 +232,7 @@ public class Draw {
 		}
 		public void update(){
 			if(ticks > 0 && mul == 1){
-				ticks --;
+				ticks -= rate;
 			}
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
@@ -245,13 +245,13 @@ public class Draw {
 			mul*=rate;
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
-			}else if(keys[KeyEvent.VK_S] && keyDown){
+			} if(keys[KeyEvent.VK_S] && keyDown){
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
-			}else if(keys[KeyEvent.VK_A] && keyDown){
+			} if(keys[KeyEvent.VK_A] && keyDown){
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
-			}else if(keys[KeyEvent.VK_D] && keyDown){
+			} if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
-			}else if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
+			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}
