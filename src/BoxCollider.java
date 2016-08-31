@@ -73,9 +73,11 @@ public class BoxCollider {
 					Object3d.setVelocityArrayY(objs, 0);
 					Draw.grounded = true;
 				}else{
-					timer.schedule(new setGrounded(), 40);
-					timer.schedule(new setJump(), 70);
+					timer.schedule(new setVals(), 40);
 				}
+			}else{
+				timer.schedule(new setGrounded(), 10);
+				System.out.println("afe");
 			}
 		}
 	}
@@ -83,14 +85,17 @@ public class BoxCollider {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			Draw.grounded = false;
+			if(!Draw.jump){
+				timer.schedule(new setVals(), 0);
+			}
 		}
 	}
-	class setJump extends TimerTask{
+	class setVals extends TimerTask{
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			Draw.jump = false;
+			Draw.grounded = false;
 		}
 	}
 }

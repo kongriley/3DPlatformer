@@ -241,7 +241,7 @@ public class Draw {
 				ticks --;
 			}
 			panel.requestFocus();
-			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.64f*rate));//gravity happens to be 0.32 units be second
+			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;
@@ -250,7 +250,6 @@ public class Draw {
 //				System.out.println(ticks);
 			}
 			mul*=rate;
-			System.out.println(rate);
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
 			}if(keys[KeyEvent.VK_S] && keyDown){
