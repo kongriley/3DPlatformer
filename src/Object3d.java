@@ -9,7 +9,7 @@ public class Object3d {
 	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
-		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
+		boxCollider = new BoxCollider(((Vec3) (vecs.get(1))).add(new Vec3(0, 0, 100)), (Vec3)vecs.get(6));
 	}
 	
 	public void setBox(){
