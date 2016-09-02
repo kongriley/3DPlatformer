@@ -43,7 +43,6 @@ public class BoxCollider {
 				}
 			}else{
 				timer.schedule(new setGrounded(), 10);
-				System.out.println("afe");
 			}
 		}
 	}

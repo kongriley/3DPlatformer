@@ -96,6 +96,7 @@ public class Draw {
 				}
 			}
 			draw3d(arrays, g);
+			
 			g.setColor(Color.green);
 			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
 		}
@@ -225,7 +226,6 @@ public class Draw {
 		public void keyReleased(KeyEvent e) {
 			if(keys[KeyEvent.VK_W] && keyDown){
 				ticks = 5;
-//				System.out.println("HI");
 			}
 			keys[e.getKeyCode()] = false;
 			
