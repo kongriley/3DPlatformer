@@ -36,6 +36,7 @@ public class BoxCollider {
 				if(!Draw.jump){
 					Object3d.setVelocityArrayY(objs, 0);
 					Draw.grounded = true;
+					break;
 //					Draw.toggled = true;
 //					Draw.toggled = false;
 				}else{
