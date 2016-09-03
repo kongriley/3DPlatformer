@@ -7,7 +7,7 @@ public class Main {
 	}
 	static void save(){
 		try{
-			FileOutputStream fs = new FileOutputStream("game.3dp");
+			FileOutputStream fs = new FileOutputStream("game.awesomeness");
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			os.writeObject(d);
 			d.objects.get(0).get(0).print();
@@ -20,7 +20,7 @@ public class Main {
 			d.frame.setVisible(false);
 			d.frame.dispose();
 			d.objects.get(0).get(0).print();
-			FileInputStream fs = new FileInputStream("game.3dp");
+			FileInputStream fs = new FileInputStream("game.awesomeness");
 			ObjectInputStream os = new ObjectInputStream(fs);
 			Draw draw = (Draw)os.readObject();
 			d = draw;
