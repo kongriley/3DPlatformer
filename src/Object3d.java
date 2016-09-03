@@ -8,6 +8,7 @@ public class Object3d implements Serializable{
 	ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	public Vec3 velocity = new Vec3(0,0,0);
 	public BoxCollider boxCollider;
+	public Vec3 position;
 	Object3d(){
 	}
 	
@@ -17,6 +18,7 @@ public class Object3d implements Serializable{
 	}
 	
 	public void setBox(){
+		position = Vec3.midpoint((Vec3) vecs.get(0).clone(),(Vec3) vecs.get(4).clone());
 		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
 	}
 	
@@ -34,6 +36,10 @@ public class Object3d implements Serializable{
 	
 	public void setVelocityY(float v){
 		this.velocity.y = v;
+	}
+	
+	public void setVelocityX(float v){
+		this.velocity.x = v;
 	}
 	
 	public void dilate(Vec3 vec, float scale) {
@@ -92,6 +98,29 @@ public class Object3d implements Serializable{
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).setVelocity(vec);
 		}
+	}
+	
+	public static void setVelocityArrayX(ArrayList<Object3d> objs, float x){
+		for (int i = 0; i < objs.size(); i++) {
+			((Object3d) objs.get(i)).setVelocityX(x);
+		}
+	}
+	
+	public static void setVelocityArrayX(ArrayList<Object3d> objs, float x, float dist){
+		float d = dist/2;
+		int W = Draw.W/2;
+		for (int i = 0; i < objs.size(); i++) {
+			Object3d obj = (Object3d) objs.get(i);
+			if(obj.position.x-W < -d || obj.position.x-W > d){
+				System.out.println(obj.position.x-W + " " + d);
+				x*=-1;
+				obj.position.translate(new Vec3(x*-20, 0, 0));
+			}
+			System.out.println(x);
+			obj.setVelocityX(x);
+			obj.position.translate(new Vec3(x, 0, 0));
+		}
+		System.out.println("\n");
 	}
 	
 	public static void setVelocityArrayY(ArrayList<Object3d> objs, float v){

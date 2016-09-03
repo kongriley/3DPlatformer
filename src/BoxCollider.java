@@ -22,9 +22,9 @@ public class BoxCollider implements Serializable{
 		Vec3 A1 = b.vec1;
 		Vec3 A2 = b.vec2;
 		
-		if(((A1.x<B1.x && A2.x>B1.x) || (A1.x>B1.x && A2.x<B1.x)) &&
-			((A1.y<B1.y && A2.y>B1.y) || (A1.y>B1.y && A2.y<B1.y)) &&
-			((A1.z<B1.z && A2.z>B1.z) || (A1.z>B1.z && A2.z<B1.z))){
+		if(((A1.x<=B1.x && A2.x>=B1.x) || (A1.x>=B1.x && A2.x<=B1.x)) &&
+			((A1.y<=B1.y && A2.y>=B1.y) || (A1.y>=B1.y && A2.y<=B1.y)) &&
+			((A1.z<=B1.z && A2.z>=B1.z) || (A1.z>=B1.z && A2.z<=B1.z))){
 			return true;
 		}
 		return false;
@@ -50,6 +50,11 @@ public class BoxCollider implements Serializable{
 				timer.schedule(new setGrounded(), 10);
 			}
 		}
+	}
+	
+	public void translate(Vec3 vec){
+		vec1.translate(vec);
+		vec2.translate(vec);
 	}
 	class setGrounded extends TimerTask{
 		@Override

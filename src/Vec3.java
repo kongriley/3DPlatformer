@@ -98,6 +98,10 @@ public class Vec3 implements Serializable{
 		return vec1;
 	}
 	
+	public Vec3 clone(){
+		return new Vec3(this.x, this.y, this.z);
+	}
+	
 	public void print(){
 		System.out.println("X: " + x + " Y: " + y + " Z: " + z);
 	}
