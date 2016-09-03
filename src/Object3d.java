@@ -13,7 +13,7 @@ public class Object3d implements Serializable{
 	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
-		boxCollider = new BoxCollider(((Vec3) (vecs.get(1))).add(new Vec3(0, 0, 300)), (Vec3)vecs.get(6));
+		setBox();
 	}
 	
 	public void setBox(){
