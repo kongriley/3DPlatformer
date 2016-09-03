@@ -28,7 +28,7 @@ public class Draw implements Serializable{
 	public static boolean grounded = false;
 	public static boolean toggled = false;
 	static int objNum = 8;
-	public static float frameRate = 10;
+	public static float frameRate = 8;
 	public static float rate = frameRate/30;
 	static boolean[] keys;
 	public static int score = 0;
@@ -68,7 +68,7 @@ public class Draw implements Serializable{
 			p.translate(new Vec3(0, 200, 500*i));
 			int retrieve = new Vec3().getZ();
 			if (retrieve == 50) {
-				score ++;
+				score++;
 			}
 			objects.add(p);
 		}
