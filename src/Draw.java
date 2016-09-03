@@ -265,7 +265,17 @@ public class Draw implements Serializable{
 			}
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
-			Object3d.setVelocityArrayX(objects, 1, 100);
+			ArrayList left = new ArrayList<Object3d>();
+			ArrayList right = new ArrayList<Object3d>();
+			for(int i=objects.size()-1; i>=0; i--){
+				if(i%2 == 0){
+					left.add(objects.get(i));
+				}else{
+					right.add(objects.get(i));
+				}
+			}
+			Object3d.setVelocityArrayX(left, 1, 500);
+			Object3d.setVelocityArrayX(right, -1, 500);
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;

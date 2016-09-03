@@ -1,4 +1,3 @@
-import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,6 +8,7 @@ public class Object3d implements Serializable{
 	ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	public Vec3 velocity = new Vec3(0,0,0);
 	public BoxCollider boxCollider;
+	public Vec3 position;
 	Object3d(){
 	}
 	
@@ -18,6 +18,7 @@ public class Object3d implements Serializable{
 	}
 	
 	public void setBox(){
+		position = Vec3.midpoint((Vec3) vecs.get(0).clone(),(Vec3) vecs.get(4).clone());
 		boxCollider = new BoxCollider((Vec3)vecs.get(1), (Vec3)vecs.get(6));
 	}
 	
@@ -106,20 +107,18 @@ public class Object3d implements Serializable{
 	}
 	
 	public static void setVelocityArrayX(ArrayList<Object3d> objs, float x, float dist){
-		dist/=2;
-		int camX = Draw.camX;
+		float d = dist/2;
+		int W = Draw.W/2;
 		for (int i = 0; i < objs.size(); i++) {
 			Object3d obj = (Object3d) objs.get(i);
-			if(i%2 == 0){
+			if(obj.position.x-W < -d || obj.position.x-W > d){
+				System.out.println(obj.position.x-W + " " + d);
 				x*=-1;
+				obj.position.translate(new Vec3(x*-20, 0, 0));
 			}
-			System.out.println(obj.vecs.get(1).x+camX/3 + " " + dist);
-			if(obj.vecs.get(1).x+camX*2 < -dist || obj.vecs.get(1).x+camX*2 > dist){
-				System.out.println("efwaaeffaaafefawfawefaes");
-				x*=-1;
-				obj.translate(new Vec3(x, 0, 0));
-			}
+			System.out.println(x);
 			obj.setVelocityX(x);
+			obj.position.translate(new Vec3(x, 0, 0));
 		}
 		System.out.println("\n");
 	}
