@@ -1,6 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Vec3 {
+public class Vec3 implements Serializable{
+	
+	static final long serialVersionUID = -7298352464830308761L;
+	
 	public static final Vec3 ZERO = new Vec3(0, 0, 0);
 	public static final Vec3 UP = new Vec3(0, -1, 0);
 	public static final Vec3 DOWN = new Vec3(0, 1, 0);

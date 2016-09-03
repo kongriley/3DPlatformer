@@ -1,9 +1,14 @@
 import java.awt.*;
+
 import java.awt.event.*;
+import java.io.*;
+
 import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
-public class Draw {
+public class Draw implements Serializable{
+	
+	static final long serialVersionUID = -7298352464830308761L;
 	
 	boolean keyDown = false;
 	float mul = 1;
@@ -11,34 +16,26 @@ public class Draw {
 	public static int yRot = 0;
 	public static int zRot = 0;
 	public static String rotMode = "x";
-	ArrayList<Object3d> objects = new ArrayList<Object3d>();
-	static ArrayList<Vec3> vecs = new ArrayList<Vec3>();
+	public ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	public static int W = 900;
 	public static int H = 900;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
-	public static FrameDraw panel;
-	public static BoxCollider playerBox;
+	public FrameDraw panel;
+	public static JFrame frame;
+	public BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
 	public static boolean toggled = false;
-	int objNum = 8;
+	static int objNum = 8;
 	public static float frameRate = 10;
 	public static float rate = frameRate/30;
 	static boolean[] keys;
-	
-	@SuppressWarnings("null")
-	Draw() {
+	void load(){
 		for(int i = 0; i < 1000; i ++){
 			keys = new boolean[i];
 		}
-		vecs = Vec3.getCube(CENTER, 100);
-		for(int i=objNum-1; i>=0; i--){
-			RectPrism p = new RectPrism(CENTER, 250, 10, 250);
-			p.translate(new Vec3(0, 200, 500*i));
-			objects.add(p);
-		}
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
@@ -54,6 +51,38 @@ public class Draw {
 		frame.pack();
 		Timer t = new Timer();
 		t.schedule(new DoStuff(), 0, (long) frameRate);
+	}
+	void init(){
+		for(int i = 0; i < 1000; i ++){
+			keys = new boolean[i];
+		}
+		for(int i=objNum-1; i>=0; i--){
+			RectPrism p = new RectPrism(CENTER, 250, 10, 250);
+			p.translate(new Vec3(0, 200, 500*i));
+			objects.add(p);
+		}
+		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
+		frame = new JFrame();
+		
+		panel = new FrameDraw();
+		panel.setSize(new Dimension(W, H));
+		
+		frame.setPreferredSize(new Dimension(W, H + 50));
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		frame.add(panel, BorderLayout.CENTER);
+		
+		(panel).paintComponent(panel.getGraphics());
+		
+		frame.pack();
+		Timer t = new Timer();
+		t.schedule(new DoStuff(), 0, (long) frameRate);
+	}
+	
+	@SuppressWarnings("null")
+	Draw() {
+		init();
 	}
 	class DoStuff extends TimerTask{
 		@Override
@@ -254,6 +283,12 @@ public class Draw {
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
+			}
+			if(keys[KeyEvent.VK_M]){
+				Main.save();
+			}
+			if(keys[KeyEvent.VK_L]){
+				Main.load();
 			}
 		}
 	}
