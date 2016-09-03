@@ -307,6 +307,9 @@ public class Draw implements Serializable{
 			if(keys[KeyEvent.VK_L]){
 				Main.load();
 			}
+			if(keys[KeyEvent.VK_ESCAPE]){
+				System.exit(0);
+			}
 		}
 	}
 }
