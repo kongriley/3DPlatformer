@@ -22,6 +22,14 @@ public class Vec3 implements Serializable{
 		this.y = y;
 		this.z = z;
 	}
+
+	public Vec3() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getZ() {
+		return (int) z;
+	}
 	
 	public void rotate(String axis, Vec3 point, float deg){
 		deg = (float) Math.toRadians(deg);

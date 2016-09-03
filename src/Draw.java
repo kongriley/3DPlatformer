@@ -21,6 +21,7 @@ public class Draw implements Serializable{
 	public static int H = 900;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public FrameDraw panel;
+	public static JLabel ribbon;
 	public static JFrame frame;
 	public BoxCollider playerBox;
 	public static boolean jump = false;
@@ -30,6 +31,8 @@ public class Draw implements Serializable{
 	public static float frameRate = 10;
 	public static float rate = frameRate/30;
 	static boolean[] keys;
+	public static int score = 0;
+	
 	void load(){
 		for(int i = 0; i < 1000; i ++){
 			keys = new boolean[i];
@@ -38,13 +41,17 @@ public class Draw implements Serializable{
 		frame = new JFrame();
 		
 		panel = new FrameDraw();
-		panel.setSize(new Dimension(W, H));
+		panel.setSize(new Dimension(W, H - 50));
+		
+		ribbon = new JLabel(score + "");
+		ribbon.setSize(new Dimension(W, 50));
 		
 		frame.setPreferredSize(new Dimension(W, H + 50));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(panel, BorderLayout.CENTER);
+		frame.add(ribbon, BorderLayout.NORTH);
 		
 		(panel).paintComponent(panel.getGraphics());
 		
@@ -59,23 +66,32 @@ public class Draw implements Serializable{
 		for(int i=objNum-1; i>=0; i--){
 			RectPrism p = new RectPrism(CENTER, 250, 10, 250);
 			p.translate(new Vec3(0, 200, 500*i));
+			int retrieve = new Vec3().getZ();
+			if (retrieve == 50) {
+				score ++;
+			}
 			objects.add(p);
 		}
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
 		frame = new JFrame();
 		
 		panel = new FrameDraw();
-		panel.setSize(new Dimension(W, H));
+		panel.setSize(new Dimension(W, H - 50));
+		
+		ribbon = new JLabel(score + "");
+		ribbon.setSize(new Dimension(W, 50));
 		
 		frame.setPreferredSize(new Dimension(W, H + 50));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(panel, BorderLayout.CENTER);
+		frame.add(ribbon, BorderLayout.NORTH);
 		
 		(panel).paintComponent(panel.getGraphics());
 		
 		frame.pack();
+		
 		Timer t = new Timer();
 		t.schedule(new DoStuff(), 0, (long) frameRate);
 	}
@@ -183,6 +199,7 @@ public class Draw implements Serializable{
 			}
 			return rInt;
 		}
+		
 		private int[][] sortFaces(int[][] arrays){
 			Object3d obj = objects.get(0);
 			Integer[] VecsMidZ = new Integer[arrays.length];

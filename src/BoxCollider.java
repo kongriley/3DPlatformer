@@ -47,7 +47,7 @@ public class BoxCollider implements Serializable{
 					timer.schedule(new setVals(), 40);
 				}
 			}else{
-				timer.schedule(new setGrounded(), 10);
+				timer.schedule(new setGrounded(), 20);
 			}
 		}
 	}
