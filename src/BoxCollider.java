@@ -1,8 +1,12 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BoxCollider {
+public class BoxCollider implements Serializable{
+	
+	static final long serialVersionUID = -7298352464830308761L;
+	
 	Vec3 vec1;
 	Vec3 vec2;
 	static Timer timer = new Timer();

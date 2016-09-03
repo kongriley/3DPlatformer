@@ -1,6 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Object3d {
+public class Object3d implements Serializable{
+	
+	static final long serialVersionUID = -7298352464830308761L;
+	
 	ArrayList<Vec3> vecs = new ArrayList<Vec3>();
 	public Vec3 velocity = new Vec3(0,0,0);
 	public BoxCollider boxCollider;
@@ -9,7 +13,7 @@ public class Object3d {
 	
 	Object3d(ArrayList vecs){
 		this.vecs = vecs;
-		boxCollider = new BoxCollider(((Vec3) (vecs.get(1))).add(new Vec3(0, 0, 100)), (Vec3)vecs.get(6));
+		boxCollider = new BoxCollider(((Vec3) (vecs.get(1))).add(new Vec3(0, 0, 300)), (Vec3)vecs.get(6));
 	}
 	
 	public void setBox(){
