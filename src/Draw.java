@@ -9,7 +9,6 @@ import java.util.Timer;
 public class Draw implements Serializable{
 	
 	static final long serialVersionUID = -7298352464830308761L;
-	
 	boolean keyDown = false;
 	float mul = 1;
 	public static int xRot = 0;
@@ -19,6 +18,8 @@ public class Draw implements Serializable{
 	public ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	public static int W = 900;
 	public static int H = 900;
+	public static int camX = W/2;
+	public static int camY = H/2;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public FrameDraw panel;
 	public static JFrame frame;
@@ -165,8 +166,7 @@ public class Draw implements Serializable{
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
 			int average_len = W/2;
-			
-			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( average_len) )) + W/2;
+			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( W/2) )) + W/2;
 
 			if(z <= -average_len){
 				rInt = (int) (((x-W/2) * ( average_len ) ) / (150)) + W/2;
@@ -265,6 +265,7 @@ public class Draw implements Serializable{
 			}
 			panel.requestFocus();
 			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
+			Object3d.setVelocityArrayX(objects, 1, 100);
 			playerBox.isTouchingArrayGrav(objects);
 			Object3d.updateArray(objects);
 			mul = 1;
@@ -278,8 +279,10 @@ public class Draw implements Serializable{
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
 			} if(keys[KeyEvent.VK_A] && keyDown){
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
+				camX -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
+				camX += 10;
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
