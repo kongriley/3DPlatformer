@@ -20,6 +20,9 @@ public class Draw implements Serializable{
 	public static int H = 900;
 	public static int camX = W/2;
 	public static int camY = H/2;
+	public static int x = 0;
+	public static int y = 200;
+	public static int z = 0;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public FrameDraw panel;
 	public static JFrame frame;
@@ -285,14 +288,18 @@ public class Draw implements Serializable{
 			mul*=rate;
 			if(keys[KeyEvent.VK_W] && keyDown){
 				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
+				z -= 10;
 			} if(keys[KeyEvent.VK_S] && keyDown){
 				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
+				z += 10;
 			} if(keys[KeyEvent.VK_A] && keyDown){
 				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 				camX -= 10;
+				x -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
 				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 				camX += 10;
+				x += 10;
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
 				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
