@@ -92,13 +92,15 @@ public class Object3d implements Serializable{
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).addVelocity(vec);
 		}
+		if(!Draw.grounded){
+			Draw.y += objs.get(0).velocity.y;
+		}
 	}
 	
 	public static void setVelocityArray(ArrayList<Object3d> objs, Vec3 vec){
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).setVelocity(vec);
 		}
-		Draw.y += objs.get(0).velocity.y;
 	}
 	
 	public static void setVelocityArrayX(ArrayList<Object3d> objs, float x){
@@ -119,18 +121,18 @@ public class Object3d implements Serializable{
 				x = Math.abs(x);
 			}
 			if(obj.position.x-W < -d){
-				System.out.println(obj.position.x-W + " " + d);
+//				System.out.println(obj.position.x-W + " " + d);
 				x = Math.abs(x);
 				obj.position.translate(new Vec3(x*20, 0, 0));
 			}else if(obj.position.x-W > d){
-				System.out.println(obj.position.x-W + " " + d);
+//				System.out.println(obj.position.x-W + " " + d);
 				x = -Math.abs(x);
 				obj.position.translate(new Vec3(x*20, 0, 0));
 			}
 			obj.setVelocityX(x);
 			obj.position.translate(new Vec3(x, 0, 0));
 		}
-		System.out.println("\n");
+//		System.out.println("\n");
 	}
 	
 	public static void setVelocityArrayY(ArrayList<Object3d> objs, float v){

@@ -310,6 +310,7 @@ public class Draw implements Serializable{
 			if(keys[KeyEvent.VK_L]){
 				Main.load();
 			}
+			System.out.println(y);
 		}
 	}
 }
