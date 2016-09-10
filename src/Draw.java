@@ -11,13 +11,14 @@ public class Draw implements Serializable{
 	static final long serialVersionUID = -7298352464830308761L;
 	boolean keyDown = false;
 	float mul = 1;
+	public int score = 0;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
 	public static String rotMode = "x";
 	public ArrayList<Object3d> objects = new ArrayList<Object3d>();
-	public static int W = 900;
-	public static int H = 900;
+	public static int W = 700;
+	public static int H = 700;
 	public static int camX = W/2;
 	public static int camY = H/2;
 	public static int x = 0;
@@ -25,6 +26,7 @@ public class Draw implements Serializable{
 	public static int z = 0;
 	public static final Vec3 CENTER = new Vec3(W/2, H/2, 0);
 	public FrameDraw panel;
+	public JLabel scoreLabel;
 	public static JFrame frame;
 	public BoxCollider playerBox;
 	public static boolean jump = false;
@@ -41,6 +43,12 @@ public class Draw implements Serializable{
 		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
 		frame = new JFrame();
 		
+		scoreLabel = new JLabel(String.valueOf(score));
+		scoreLabel.setSize(new Dimension(100, 100));
+		scoreLabel.setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
+		scoreLabel.setFont(new Font("Arial", 50, 50));
+		scoreLabel.setOpaque(true);
+		
 		panel = new FrameDraw();
 		panel.setSize(new Dimension(W, H));
 		
@@ -48,6 +56,7 @@ public class Draw implements Serializable{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
+		frame.add(scoreLabel, BorderLayout.NORTH);
 		frame.add(panel, BorderLayout.CENTER);
 		
 		(panel).paintComponent(panel.getGraphics());
@@ -57,31 +66,12 @@ public class Draw implements Serializable{
 		t.schedule(new DoStuff(), 0, (long) frameRate);
 	}
 	void init(){
-		for(int i = 0; i < 1000; i ++){
-			keys = new boolean[i];
-		}
 		for(int i=objNum-1; i>=0; i--){
 			RectPrism p = new RectPrism(CENTER, 250, 10, 250);
 			p.translate(new Vec3(0, 200, 500*i));
 			objects.add(p);
 		}
-		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
-		frame = new JFrame();
-		
-		panel = new FrameDraw();
-		panel.setSize(new Dimension(W, H));
-		
-		frame.setPreferredSize(new Dimension(W, H + 50));
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-		frame.add(panel, BorderLayout.CENTER);
-		
-		(panel).paintComponent(panel.getGraphics());
-		
-		frame.pack();
-		Timer t = new Timer();
-		t.schedule(new DoStuff(), 0, (long) frameRate);
+		load();
 	}
 	
 	@SuppressWarnings("null")
@@ -290,6 +280,18 @@ public class Draw implements Serializable{
 			Object3d.setVelocityArrayX(left, 1, 500);
 			Object3d.setVelocityArrayX(right, -1, 500);
 			playerBox.isTouchingArrayGrav(objects);
+			for(int i=objects.size()-1; i>=0; i--){
+				Object3d obj = objects.get(i);
+				if(playerBox.isTouching(obj.boxCollider)){
+					if(objects.size() - i+1>score){
+						score = objects.size() - i;
+						scoreLabel.setText(String.valueOf(score));
+					}
+					if(score == objects.size()){
+						scoreLabel.setText("YOU WIN!!!");
+					}
+				}
+			}
 			Object3d.updateArray(objects);
 			mul = 1;
 			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0 || keys[KeyEvent.VK_R]){
@@ -320,7 +322,10 @@ public class Draw implements Serializable{
 			if(keys[KeyEvent.VK_L]){
 				Main.load();
 			}
-			System.out.println(y);
+			if(keys[KeyEvent.VK_R]){
+				Main.restart();
+			}
+//			System.out.println(y);
 		}
 	}
 }
