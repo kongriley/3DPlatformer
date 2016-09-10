@@ -12,6 +12,7 @@ public class Draw implements Serializable{
 	boolean keyDown = false;
 	float mul = 1;
 	public int score = 0;
+	public static ArrayList players = new ArrayList<Vec3>();
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
@@ -96,9 +97,11 @@ public class Draw implements Serializable{
 		FrameDraw(){
 			addKeyListener(this);
 		}
+		Graphics gr;
 		protected void paintComponent(Graphics g) {
-			update();
+			gr = g;
 			g.clearRect(0, 0, W*2, H*2);
+			update();
 			int[] a1 = {0,4,5,1};
 			int[] a2 = {2,0,1,3};
 			int[] a3 = {6,7,5,4};
@@ -157,9 +160,9 @@ public class Draw implements Serializable{
 		private void drawPlayerPoint(Vec3 vec, Graphics g, int size){
 			g.fillRect((int)(vec.x - size/2), (int)(vec.y-size/2), size, size);
 		}
-		private void drawServerPoint(Vec3 vec, Graphics g, int x, int y, int size) {
-			g.fillRect((int)(vec.x - size/2), (int)(vec.y - size/2), x, y);
-		}
+//		private void drawServerPoint(Vec3 vec, Graphics g, int x, int y, int size) {
+//			g.fillRect((int)(vec.x - size/2), (int)(vec.y - size/2), x, y);
+//		}
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
 			int average_len = W/2;
@@ -254,15 +257,16 @@ public class Draw implements Serializable{
 				ticks = 5;
 			}
 			keys[e.getKeyCode()] = false;
-			
 		}
+		
 		public void update(){
-//			public getServerPoint(){
-//				return something;
-//			}
-//			public setServerPoint(something){
-//				this.something = something;
-//			}
+//			players.add(new Vec3(W/2, H/2, 0));
+			if(!players.isEmpty()){
+				Iterator it = players.iterator();
+				while(it.hasNext()){
+					drawPlayerPoint((Vec3)it.next(), gr, 50);
+				}
+			}
 			if(ticks > 0 && mul == 1){
 				ticks -= rate;
 			}
