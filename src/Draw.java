@@ -132,6 +132,7 @@ public class Draw implements Serializable{
 			
 			g.setColor(Color.green);
 			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
+			//drawServerPoint();
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -165,6 +166,9 @@ public class Draw implements Serializable{
 		}
 		private void drawPlayerPoint(Vec3 vec, Graphics g, int size){
 			g.fillRect((int)(vec.x - size/2), (int)(vec.y-size/2), size, size);
+		}
+		private void drawServerPoint(Vec3 vec, Graphics g, int x, int y, int size) {
+			g.fillRect((int)(vec.x - size/2), (int)(vec.y - size/2), x, y);
 		}
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
@@ -263,6 +267,12 @@ public class Draw implements Serializable{
 			
 		}
 		public void update(){
+//			public getServerPoint(){
+//				return something;
+//			}
+//			public setServerPoint(something){
+//				this.something = something;
+//			}
 			if(ticks > 0 && mul == 1){
 				ticks -= rate;
 			}
