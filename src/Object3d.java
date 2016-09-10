@@ -98,6 +98,7 @@ public class Object3d implements Serializable{
 		for (int i = 0; i < objs.size(); i++) {
 			((Object3d) objs.get(i)).setVelocity(vec);
 		}
+		Draw.y += objs.get(0).velocity.y;
 	}
 	
 	public static void setVelocityArrayX(ArrayList<Object3d> objs, float x){
