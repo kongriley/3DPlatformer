@@ -111,12 +111,21 @@ public class Object3d implements Serializable{
 		int W = Draw.W/2;
 		for (int i = 0; i < objs.size(); i++) {
 			Object3d obj = (Object3d) objs.get(i);
-			if(obj.position.x-W < -d || obj.position.x-W > d){
-				System.out.println(obj.position.x-W + " " + d);
-				x*=-1;
-				obj.position.translate(new Vec3(x*-20, 0, 0));
+			if(obj.velocity.x < 0){
+				x = -Math.abs(x);
 			}
-			System.out.println(x);
+			else if(obj.velocity.x > 0){
+				x = Math.abs(x);
+			}
+			if(obj.position.x-W < -d){
+				System.out.println(obj.position.x-W + " " + d);
+				x = Math.abs(x);
+				obj.position.translate(new Vec3(x*20, 0, 0));
+			}else if(obj.position.x-W > d){
+				System.out.println(obj.position.x-W + " " + d);
+				x = -Math.abs(x);
+				obj.position.translate(new Vec3(x*20, 0, 0));
+			}
 			obj.setVelocityX(x);
 			obj.position.translate(new Vec3(x, 0, 0));
 		}
