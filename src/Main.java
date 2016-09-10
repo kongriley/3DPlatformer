@@ -35,7 +35,7 @@ public class Main {
 		d.objects.clear();
 		d.frame.setVisible(false);
 		d.frame.dispose();
-		d.init();
+		d = new Draw();
 	}
 }
 //"X: 325.0 Y: -6289.2095 Z: 2981.6646";
