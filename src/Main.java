@@ -31,5 +31,11 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+	static void restart(){
+		d.objects.clear();
+		d.frame.setVisible(false);
+		d.frame.dispose();
+		d.init();
+	}
 }
 //"X: 325.0 Y: -6289.2095 Z: 2981.6646";
