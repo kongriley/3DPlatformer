@@ -23,8 +23,8 @@ public class Object3d implements Serializable{
 	}
 	
 	public void update(){
-		setBox();
 		translate(velocity);
+		setBox();
 	}
 	
 	public void addVelocity(Vec3 vec){
