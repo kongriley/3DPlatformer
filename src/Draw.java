@@ -12,10 +12,6 @@ public class Draw implements Serializable{
 	boolean keyDown = false;
 	float mul = 1;
 	public int score = 0;
-	public static int xRot = 0;
-	public static int yRot = 0;
-	public static int zRot = 0;
-	public static String rotMode = "x";
 	public ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	public static int W = 700;
 	public static int H = 700;
@@ -29,7 +25,7 @@ public class Draw implements Serializable{
 	public FrameDraw panel;
 	public JLabel scoreLabel;
 	public static JFrame frame;
-	public Object3d player;
+	public static Object3d player;
 //	public BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
@@ -183,7 +179,7 @@ public class Draw implements Serializable{
 			int average_len = H/2;
 			int rInt = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
 			if(camZ >= z+average_len){
-				rInt=(int) ((y*4)-H);
+				rInt=(int) (W-camY + y);
 			}
 			return rInt;
 		}
@@ -269,7 +265,8 @@ public class Draw implements Serializable{
 				ticks -= rate;
 			}
 			panel.requestFocus();
-			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
+//			Object3d.addVelocityArray(objects, new Vec3(0, -1, 0).multiply(0.6f*rate));//gravity happens to be 0.32 units be second
+			player.addVelocity(new Vec3(0, 1, 0).multiply(0.6f*rate));
 			ArrayList left = new ArrayList<Object3d>();
 			ArrayList right = new ArrayList<Object3d>();
 			for(int i=objects.size()-1; i>=0; i--){
@@ -295,7 +292,7 @@ public class Draw implements Serializable{
 				}
 			}
 			Object3d.updateArray(objects);
-			player.update();
+			boolean updated = false;
 			mul = 1;
 			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0 || keys[KeyEvent.VK_R]){
 				mul = 2;
@@ -304,34 +301,37 @@ public class Draw implements Serializable{
 			if(keys[KeyEvent.VK_W] && keyDown){
 //				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
 				player.translate(Vec3.FORWARD.multiply(10*mul));
-				player.update();
-				camZ = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).z;
+//				player.update();
+				camZ = (int) player.position.z;
 				z -= 10;
 			} if(keys[KeyEvent.VK_S] && keyDown){
 //				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
 				player.translate(Vec3.BACKWARD.multiply(10*mul));
-				player.update();
-				camZ = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).z;
+//				player.update();
+				camZ = (int) player.position.z;
 				z += 10;
 			} if(keys[KeyEvent.VK_A] && keyDown){
 //				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 				player.translate(Vec3.LEFT.multiply(10*mul));
-				player.update();
-				camX = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).x;
+//				player.update();
+				camX = (int) player.position.x;
 				x -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
 //				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 				player.translate(Vec3.RIGHT.multiply(10*mul));
-				player.update();
-				camX = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).x;
+//				player.update();
+				camX = (int) player.position.x;
 				x += 10;
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
-				Vec3 jumpVec = new Vec3(0, -5, 0);
-				player.addVelocity(jumpVec.multiply(rate));
-				player.update();
+				Vec3 jumpVec = new Vec3(0, -25, 0);
+				player.setVelocity(jumpVec.multiply(rate));
+//				player.update();
 //				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}
-			camY = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).y - 50;
+			if(!updated){
+				player.update();
+			}
+			camY = (int) player.position.y - 150;
 			
 			if(keys[KeyEvent.VK_M]){
 				Main.save();
