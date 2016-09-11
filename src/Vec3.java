@@ -8,10 +8,10 @@ public class Vec3 implements Serializable{
 	public static final Vec3 ZERO = new Vec3(0, 0, 0);
 	public static final Vec3 UP = new Vec3(0, -1, 0);
 	public static final Vec3 DOWN = new Vec3(0, 1, 0);
-	public static final Vec3 LEFT = new Vec3(1, 0, 0);
-	public static final Vec3 RIGHT = new Vec3(-1, 0, 0);
-	public static final Vec3 FORWARD = new Vec3(0, 0, -1);
-	public static final Vec3 BACKWARD = new Vec3(0, 0, 1);
+	public static final Vec3 LEFT = new Vec3(-1, 0, 0);
+	public static final Vec3 RIGHT = new Vec3(1, 0, 0);
+	public static final Vec3 FORWARD = new Vec3(0, 0, 1);
+	public static final Vec3 BACKWARD = new Vec3(0, 0, -1);
 	
 	public float x;
 	public float y;
@@ -96,6 +96,14 @@ public class Vec3 implements Serializable{
 		vec1.y /= 2;
 		vec1.z /= 2;
 		return vec1;
+	}
+	
+	public static float distance(Vec3 vec1, Vec3 vec2){
+		return (float) Math.sqrt(Math.pow((vec1.x-vec2.x),2) + Math.pow((vec1.y-vec2.y),2) + Math.pow((vec1.z-vec2.z),2));
+	}
+	
+	public float distance(Vec3 vec){
+		return distance(vec, this);
 	}
 	
 	public Vec3 clone(){

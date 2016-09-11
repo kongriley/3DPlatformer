@@ -21,6 +21,7 @@ public class Draw implements Serializable{
 	public static int H = 700;
 	public static int camX = W/2;
 	public static int camY = H/2;
+	public static int camZ = 0;
 	public static int x = 0;
 	public static int y = 200;
 	public static int z = 0;
@@ -28,7 +29,8 @@ public class Draw implements Serializable{
 	public FrameDraw panel;
 	public JLabel scoreLabel;
 	public static JFrame frame;
-	public BoxCollider playerBox;
+	public Object3d player;
+//	public BoxCollider playerBox;
 	public static boolean jump = false;
 	public static boolean grounded = false;
 	public static boolean toggled = false;
@@ -40,7 +42,9 @@ public class Draw implements Serializable{
 		for(int i = 0; i < 1000; i ++){
 			keys = new boolean[i];
 		}
-		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
+		player = new RectPrism(CENTER.add(new Vec3(0, 50, 0)), 10, 10, 10);
+//		playerBox = new BoxCollider(CENTER.add(new Vec3(0, 50, 0)), CENTER.add(new Vec3(1, 50, 1)));
+//		player.boxCollider = playerBox;
 		frame = new JFrame();
 		
 		scoreLabel = new JLabel(String.valueOf(score));
@@ -118,10 +122,17 @@ public class Draw implements Serializable{
 					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
 				}
 			}
+			Object3d obj = player;
+			for (int i = 0; i < obj.size(); i++) {
+				Vec3 vec = (Vec3) obj.get(i);
+				drawPoint(vec, g);
+				char[] charAr = {Integer.toString(i).charAt(0)};
+				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+			}
 			draw3d(arrays, g);
 			
 			g.setColor(Color.green);
-			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
+//			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -159,10 +170,10 @@ public class Draw implements Serializable{
 		private int getX(float x, float z){
 //			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
 			int average_len = W/2;
-			int rInt = (int) (((x-W/2) * ( average_len ) ) / ( z + ( W/2) )) + W/2;
+			int rInt = (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
 
-			if(z <= -average_len){
-				rInt = (int) (((x-W/2) * ( average_len ) ) / (150)) + W/2;
+			if(camZ >= z+average_len){
+				rInt = (int) (((x-camX) * ( average_len ) ) / (150)) + W/2;
 			}
 			return rInt;
 		}
@@ -170,8 +181,8 @@ public class Draw implements Serializable{
 //			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
 			int average_len = H/2;
 			y+= 175;
-			int rInt = (int) (((y-H/2) * ( average_len) ) / ( z+ ( average_len) )) + H/2;
-			if(z <= -average_len){
+			int rInt = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
+			if(camZ >= z+average_len){
 				rInt=(int) ((y*4)-1450);
 			}
 			return rInt;
@@ -253,6 +264,7 @@ public class Draw implements Serializable{
 			
 		}
 		public void update(){
+			BoxCollider playerBox = player.boxCollider;
 			if(ticks > 0 && mul == 1){
 				ticks -= rate;
 			}
@@ -283,29 +295,38 @@ public class Draw implements Serializable{
 				}
 			}
 			Object3d.updateArray(objects);
+			player.update();
 			mul = 1;
 			if(keys[KeyEvent.VK_SHIFT] || keys[KeyEvent.VK_W] && ticks > 0 || keys[KeyEvent.VK_R]){
 				mul = 2;
 			}
 			mul*=rate;
 			if(keys[KeyEvent.VK_W] && keyDown){
-				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
+//				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
+				player.translate(Vec3.FORWARD.multiply(10*mul));
+				camZ = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).z;
 				z -= 10;
 			} if(keys[KeyEvent.VK_S] && keyDown){
-				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
+//				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
+				player.translate(Vec3.BACKWARD.multiply(10*mul));
+				camZ = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).z;
 				z += 10;
 			} if(keys[KeyEvent.VK_A] && keyDown){
-				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
-				camX -= 10;
+//				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
+				player.translate(Vec3.LEFT.multiply(10*mul));
+				camX = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).x;
 				x -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
-				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
-				camX += 10;
+//				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
+				player.translate(Vec3.RIGHT.multiply(10*mul));
+				camX = (int) Vec3.midpoint(playerBox.vec1, playerBox.vec2).x;
 				x += 10;
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, 5, 0);
-				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
+				
+//				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
 			}
+			
 			if(keys[KeyEvent.VK_M]){
 				Main.save();
 			}

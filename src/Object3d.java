@@ -23,6 +23,7 @@ public class Object3d implements Serializable{
 	}
 	
 	public void update(){
+		setBox();
 		translate(velocity);
 	}
 	
