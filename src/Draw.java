@@ -11,7 +11,7 @@ public class Draw implements Serializable{
 	static final long serialVersionUID = -7298352464830308761L;
 	boolean keyDown = false;
 	float mul = 1;
-	public int score = 0;
+	public int score = -1;
 	public static int xRot = 0;
 	public static int yRot = 0;
 	public static int zRot = 0;
@@ -47,7 +47,11 @@ public class Draw implements Serializable{
 //		player.boxCollider = playerBox;
 		frame = new JFrame();
 		
-		scoreLabel = new JLabel(String.valueOf(score));
+		if (score >= 0) {
+			scoreLabel = new JLabel(score + "");
+		} else {
+			scoreLabel = new JLabel("0");
+		}
 		scoreLabel.setSize(new Dimension(100, 100));
 		scoreLabel.setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
 		scoreLabel.setFont(new Font("Arial", 50, 50));
@@ -132,7 +136,7 @@ public class Draw implements Serializable{
 			draw3d(arrays, g);
 			
 			g.setColor(Color.green);
-//			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
+			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -286,10 +290,10 @@ public class Draw implements Serializable{
 				Object3d obj = objects.get(i);
 				if(playerBox.isTouching(obj.boxCollider)){
 					if(objects.size() - i+1>score){
-						score = objects.size() - i;
-						scoreLabel.setText(String.valueOf(score));
+						score = objects.size() - i - 1;
+						scoreLabel.setText(score + "");
 					}
-					if(score == objects.size()){
+					if(score == objects.size() - 1){
 						scoreLabel.setText("YOU WIN!!!");
 					}
 				}
