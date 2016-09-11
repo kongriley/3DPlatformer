@@ -32,7 +32,6 @@ public class Main {
 		}
 	}
 	static void restart(){
-		d.objects.clear();
 		d.frame.setVisible(false);
 		d.frame.dispose();
 		d = new Draw();

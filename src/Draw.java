@@ -323,7 +323,7 @@ public class Draw implements Serializable{
 				camX = (int) player.position.x;
 				x += 10;
 			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
-				Vec3 jumpVec = new Vec3(0, -25, 0);
+				Vec3 jumpVec = new Vec3(0, -20, 0);
 				player.setVelocity(jumpVec.multiply(rate));
 //				player.update();
 //				Object3d.addVelocityArray(objects, jumpVec.multiply(rate));
