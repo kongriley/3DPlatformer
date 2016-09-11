@@ -290,7 +290,7 @@ public class Draw implements Serializable{
 			for(int i=objects.size()-1; i>=0; i--){
 				Object3d obj = objects.get(i);
 				if(playerBox.isTouching(obj.boxCollider)){
-					if(objects.size() - i+1>score){
+					if(objects.size() - i-1>score){
 						score = objects.size() - i - 1;
 						scoreLabel.setText(score + "");
 					}
