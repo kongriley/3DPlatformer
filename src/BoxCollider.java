@@ -22,9 +22,9 @@ public class BoxCollider implements Serializable{
 		Vec3 A1 = b.vec1;
 		Vec3 A2 = b.vec2;
 		
-		if(((A1.x<=B1.x && A2.x>=B1.x) || (A1.x>=B1.x && A2.x<=B1.x)) &&
-			((A1.y<=B1.y && A2.y>=B1.y) || (A1.y>=B1.y && A2.y<=B1.y)) &&
-			((A1.z<=B1.z && A2.z>=B1.z) || (A1.z>=B1.z && A2.z<=B1.z))){
+		if(((A1.x<=B2.x && A2.x>=B2.x) || (A1.x>=B2.x && A2.x<=B2.x)) &&
+			((A1.y<=B2.y && A2.y>=B2.y) || (A1.y>=B2.y && A2.y<=B2.y)) &&
+			((A1.z<=B2.z && A2.z>=B2.z) || (A1.z>=B2.z && A2.z<=B2.z))){
 			return true;
 		}
 		return false;
