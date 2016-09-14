@@ -135,9 +135,6 @@ public class Draw implements Serializable{
 				char[] charAr = {Integer.toString(i).charAt(0)};
 				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
 			}
-			
-			g.setColor(Color.green);
-			drawPlayerPoint(CENTER.add(new Vec3(0, 190, 0)), g, 50);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
