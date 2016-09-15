@@ -22,6 +22,7 @@ public class Draw implements Serializable{
 	public static int camX = W/2;
 	public static int camY = H/2;
 	public static int camZ = 0;
+	public static Vec3 camRot = new Vec3(0,0,0);
 	public static int x = 0;
 	public static int y = 200;
 	public static int z = 0;
@@ -187,6 +188,29 @@ public class Draw implements Serializable{
 				rInt=(int) (W-camY + y);
 			}
 			return rInt;
+		}
+		private int[] getXY(Vec3 vec){
+			vec.rotate("x", new Vec3(camX, camY, camZ), -camRot.x);
+			vec.rotate("y", new Vec3(camX, camY, camZ), -camRot.y);
+			vec.rotate("z", new Vec3(camX, camY, camZ), -camRot.z);
+			int x = (int) vec.x;
+			int y = (int) vec.y;
+			int z = (int) vec.z;
+			
+			int average_len = H/2;
+			int ry = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
+			if(camZ >= z+average_len){
+				ry=(int) (W-camY + y);
+			}
+			
+			average_len = W/2;
+			int rx = (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
+
+			if(camZ >= z+average_len){
+				rx = (int) (((x-camX) * ( average_len ) ) / (150)) + W/2;
+			}
+			int[] i = {rx, ry};
+			return i;
 		}
 		private int[][] sortFaces(int[][] arrays){
 			Object3d obj = objects.get(0);
