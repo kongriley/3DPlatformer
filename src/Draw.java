@@ -124,7 +124,8 @@ public class Draw implements Serializable{
 					Vec3 vec = (Vec3) obj.get(i);
 					drawPoint(vec, g);
 					char[] charAr = {Integer.toString(i).charAt(0)};
-					g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+					int[] coords = getXY(vec);
+					g.drawChars(charAr, 0, 1, coords[0], coords[1]);
 				}
 			}
 			draw3d(arrays, g);
@@ -134,7 +135,8 @@ public class Draw implements Serializable{
 				Vec3 vec = (Vec3) obj.get(i);
 				drawPoint(vec, g);
 				char[] charAr = {Integer.toString(i).charAt(0)};
-				g.drawChars(charAr, 0, 1, getX(vec.x, vec.z), getY(vec.y, vec.z));
+				int[] coords = getXY(vec);
+				g.drawChars(charAr, 0, 1, coords[0], coords[1]);
 			}
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
@@ -145,8 +147,9 @@ public class Draw implements Serializable{
 				int x = (int)vec.x;
 				int y = (int)vec.y;
 				int z = (int)vec.z;
-				rArray[0][i] = getX(x, z);
-				rArray[1][i] = getY(y, z);
+				int[] coords = getXY(new Vec3(x, y, z));
+				rArray[0][i] = coords[0];
+				rArray[1][i] = coords[1];
 			}
 			return rArray;
 		}
@@ -165,29 +168,11 @@ public class Draw implements Serializable{
 			}
 		}
 		private void drawPoint(Vec3 vec, Graphics g){
-			g.fillRect(getX(vec.x, vec.z), getY(vec.y, vec.z), 5, 5);
+			int[] coords = getXY(vec);
+			g.fillRect(coords[0], coords[1], 5, 5);
 		}
 		private void drawPlayerPoint(Vec3 vec, Graphics g, int size){
 			g.fillRect((int)(vec.x - size/2), (int)(vec.y-size/2), size, size);
-		}
-		private int getX(float x, float z){
-//			int rInt = (int)(((x-W/2)*MAX_DIST/z)+W/2);
-			int average_len = W/2;
-			int rInt = (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
-
-			if(camZ >= z+average_len){
-				rInt = (int) (((x-camX) * ( average_len ) ) / (150)) + W/2;
-			}
-			return rInt;
-		}
-		private int getY(float y, float z){
-//			int rInt = (int)(((y-H/2)*MAX_DIST/z)+H/2);
-			int average_len = H/2;
-			int rInt = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
-			if(camZ >= z+average_len){
-				rInt=(int) (W-camY + y);
-			}
-			return rInt;
 		}
 		private int[] getXY(Vec3 vec){
 			vec.rotate("x", new Vec3(camX, camY, camZ), -camRot.x);
@@ -351,7 +336,11 @@ public class Draw implements Serializable{
 //				player.update();
 				camX = (int) player.position.x;
 				x += 10;
-			} if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
+			}if(keys[KeyEvent.VK_Q] && keyDown){
+				camRot.rotate("y", new Vec3(camX, camY, camZ), -1);
+			} if(keys[KeyEvent.VK_E] && keyDown){
+				camRot.rotate("y", new Vec3(camX, camY, camZ), 1);
+			}if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, -20, 0);
 				player.setVelocity(jumpVec.multiply(rate));
 //				player.update();
