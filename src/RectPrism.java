@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 public class RectPrism extends Object3d{
+	RectPrism(){
+		
+	}
 	RectPrism(Vec3 center, float x, float y, float z){
 		super();
 		ArrayList<Vec3> vecA = new ArrayList<Vec3>();
