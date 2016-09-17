@@ -386,12 +386,10 @@ public class Draw implements Serializable{
 			camRot.y -= distX*rate;
 			cam.rotate("y", player.position, -distX*rate*sesitiv);
 			player.rotate("y", player.position, -distX*rate);
-			if(distX != 0){
-				try {
-				    Robot robot = new Robot();
-				    robot.mouseMove(W/2, H/2);
-				} catch (AWTException e) {
-				}
+			try {
+			    Robot robot = new Robot();
+			    robot.mouseMove(W/2, H/2);
+			} catch (AWTException e) {
 			}
 		}
 	}
