@@ -1,6 +1,7 @@
 import java.awt.*;
 
 import java.awt.event.*;
+import java.awt.image.*;
 import java.io.*;
 
 import javax.swing.*;
@@ -37,6 +38,8 @@ public class Draw implements Serializable{
 	public static float frameRate = 10;
 	public static float rate = frameRate/30;
 	static boolean[] keys;
+	transient BufferedImage cursorImg;
+	transient Cursor blankCursor;
 	void load(){
 		for(int i = 0; i < 1000; i ++){
 			keys = new boolean[i];
@@ -369,6 +372,10 @@ public class Draw implements Serializable{
 				Main.restart();
 			}
 //			System.out.println(y);
+			cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+				    cursorImg, new Point(0, 0), "blank cursor");
+			this.setCursor(blankCursor);
 		}
 	}
 }
