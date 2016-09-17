@@ -316,15 +316,15 @@ public class Draw implements Serializable{
 			mul*=rate;
 			if(keys[KeyEvent.VK_W] && keyDown){
 //				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
-//				player.translate(Vec3.FORWARD.multiply(10*mul));
-				player.translate(player.position.forward(camRot).multiply(10*mul));
+				player.translate(Vec3.FORWARD.multiply(10*mul));
+//				player.translate(player.position.forward(camRot).multiply(10*mul));
 //				player.update();
 				cam.z = (int) player.position.z;
 				z -= 10;
 			} if(keys[KeyEvent.VK_S] && keyDown){
 //				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
-//				player.translate(Vec3.BACKWARD.multiply(10*mul));
-				player.translate(player.position.forward(camRot).multiply(-10*mul));
+				player.translate(Vec3.BACKWARD.multiply(10*mul));
+//				player.translate(player.position.forward(camRot).multiply(-10*mul));
 //				player.update();
 				cam.z = (int) player.position.z;
 				z += 10;
