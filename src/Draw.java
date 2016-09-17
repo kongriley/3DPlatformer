@@ -19,9 +19,7 @@ public class Draw implements Serializable{
 	public ArrayList<Object3d> objects = new ArrayList<Object3d>();
 	public static int W = 700;
 	public static int H = 700;
-	public static int camX = W/2;
-	public static int camY = H/2;
-	public static int camZ = 0;
+	public static Vec3 cam = new Vec3(W/2, H/2 , 0);
 	public Vec3 camRot = new Vec3(0,0,0);
 	public static int x = 0;
 	public static int y = 200;
@@ -176,27 +174,27 @@ public class Draw implements Serializable{
 		}
 		private int[] getXY(Vec3 vec){
 			Vec3 point = vec.clone();
-			point.rotate("x", new Vec3(camX, camY, camZ), -camRot.x);
-			point.rotate("y", new Vec3(camX, camY, camZ), -camRot.y);
-			point.rotate("z", new Vec3(camX, camY, camZ), -camRot.z);
+			point.rotate("x", new Vec3(cam.x, cam.y, cam.z), -camRot.x);
+			point.rotate("y", new Vec3(cam.x, cam.y, cam.z), -camRot.y);
+			point.rotate("z", new Vec3(cam.x, cam.y, cam.z), -camRot.z);
 			int x = (int) point.x;
 			int y = (int) point.y;
 			int z = (int) point.z;
 			
 			int average_len = H/2;
 			int ry;
-			if(camZ >= z+average_len){
-				ry=(int) (W-camY + y);
+			if(cam.z >= z+average_len){
+				ry=(int) (W-cam.y + y);
 			}else{
-				ry = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
+				ry = (int) (((y-cam.y) * ( average_len) ) / ( z+ ( average_len) -cam.z)) + H/2;
 			}
 			
 			average_len = W/2;
 			int rx;
-			if(camZ >= z+average_len){
-				rx = (int) (((x-camX) * ( average_len ) ) / (150)) + W/2;
+			if(cam.z >= z+average_len){
+				rx = (int) (((x-cam.x) * ( average_len ) ) / (150)) + W/2;
 			}else{
-				rx= (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
+				rx= (int) (((x-cam.x) * ( average_len ) ) / ( z + ( W/2) -cam.z)) + W/2;
 			}
 			int[] i = {rx, ry};
 			return i;
@@ -320,25 +318,25 @@ public class Draw implements Serializable{
 //				Object3d.translateArray(objects, Vec3.FORWARD.multiply(10*mul));
 				player.translate(Vec3.FORWARD.multiply(10*mul));
 //				player.update();
-				camZ = (int) player.position.z;
+				cam.z = (int) player.position.z;
 				z -= 10;
 			} if(keys[KeyEvent.VK_S] && keyDown){
 //				Object3d.translateArray(objects, Vec3.BACKWARD.multiply(10*mul));
 				player.translate(Vec3.BACKWARD.multiply(10*mul));
 //				player.update();
-				camZ = (int) player.position.z;
+				cam.z = (int) player.position.z;
 				z += 10;
 			} if(keys[KeyEvent.VK_A] && keyDown){
 //				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 				player.translate(Vec3.LEFT.multiply(10*mul));
 //				player.update();
-				camX = (int) player.position.x;
+				cam.x = (int) player.position.x;
 				x -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
 //				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
 				player.translate(Vec3.RIGHT.multiply(10*mul));
 //				player.update();
-				camX = (int) player.position.x;
+				cam.x = (int) player.position.x;
 				x += 10;
 			}if(keys[KeyEvent.VK_Q] && keyDown){
 				camRot.y -= 1;
@@ -353,7 +351,7 @@ public class Draw implements Serializable{
 			if(!updated){
 				player.update();
 			}
-			camY = (int) player.position.y - 150;
+			cam.y = (int) player.position.y - 150;
 			
 			if(keys[KeyEvent.VK_M]){
 				Main.save();
