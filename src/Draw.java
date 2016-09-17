@@ -266,7 +266,7 @@ public class Draw implements Serializable{
 		class setToggled extends TimerTask{
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				
 				Draw.toggled = false;
 			}
 		}
@@ -343,15 +343,17 @@ public class Draw implements Serializable{
 //				player.update();
 				cam = player.position;
 				x += 10;
-			}if(keys[KeyEvent.VK_Q] && keyDown){
-				camRot.y -= 1;
-				cam.rotate("y", player.position, -1);
-				player.rotate("y", player.position, -1);
-			} if(keys[KeyEvent.VK_E] && keyDown){
-				camRot.y += 1;
-				cam.rotate("y", player.position, 1);
-				player.rotate("y", player.position, 1);
-			}if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
+			}
+//			if(keys[KeyEvent.VK_Q] && keyDown){
+//				camRot.y -= 1;
+//				cam.rotate("y", player.position, -1);
+//				player.rotate("y", player.position, -1);
+//			} if(keys[KeyEvent.VK_E] && keyDown){
+//				camRot.y += 1;
+//				cam.rotate("y", player.position, 1);
+//				player.rotate("y", player.position, 1);
+//			}
+			if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, -20, 0);
 				player.setVelocity(jumpVec.multiply(rate));
 //				player.update();
@@ -376,6 +378,21 @@ public class Draw implements Serializable{
 			blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
 				    cursorImg, new Point(0, 0), "blank cursor");
 			this.setCursor(blankCursor);
+	        int mouseX = MouseInfo.getPointerInfo().getLocation().x;  
+			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+			int distX = W/2 - mouseX;
+			int distY = H/2 - mouseY;
+			float sesitiv = 0.1f;
+			camRot.y -= distX*rate;
+			cam.rotate("y", player.position, -distX*rate*sesitiv);
+			player.rotate("y", player.position, -distX*rate);
+			if(distX != 0){
+				try {
+				    Robot robot = new Robot();
+				    robot.mouseMove(W/2, H/2);
+				} catch (AWTException e) {
+				}
+			}
 		}
 	}
 }
