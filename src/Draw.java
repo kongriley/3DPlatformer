@@ -22,7 +22,7 @@ public class Draw implements Serializable{
 	public static int camX = W/2;
 	public static int camY = H/2;
 	public static int camZ = 0;
-	public static Vec3 camRot = new Vec3(0,0,0);
+	public Vec3 camRot = new Vec3(0,0,0);
 	public static int x = 0;
 	public static int y = 200;
 	public static int z = 0;
@@ -175,12 +175,13 @@ public class Draw implements Serializable{
 			g.fillRect((int)(vec.x - size/2), (int)(vec.y-size/2), size, size);
 		}
 		private int[] getXY(Vec3 vec){
-			vec.rotate("x", new Vec3(camX, camY, camZ), -camRot.x);
-			vec.rotate("y", new Vec3(camX, camY, camZ), -camRot.y);
-			vec.rotate("z", new Vec3(camX, camY, camZ), -camRot.z);
-			int x = (int) vec.x;
-			int y = (int) vec.y;
-			int z = (int) vec.z;
+			Vec3 point = vec.clone();
+			point.rotate("x", new Vec3(camX, camY, camZ), -camRot.x);
+			point.rotate("y", new Vec3(camX, camY, camZ), -camRot.y);
+			point.rotate("z", new Vec3(camX, camY, camZ), -camRot.z);
+			int x = (int) point.x;
+			int y = (int) point.y;
+			int z = (int) point.z;
 			
 			int average_len = H/2;
 			int ry;
@@ -340,9 +341,9 @@ public class Draw implements Serializable{
 				camX = (int) player.position.x;
 				x += 10;
 			}if(keys[KeyEvent.VK_Q] && keyDown){
-				camRot.rotate("y", new Vec3(camX, camY, camZ), -1);
+				camRot.y -= 1;
 			} if(keys[KeyEvent.VK_E] && keyDown){
-				camRot.rotate("y", new Vec3(camX, camY, camZ), 1);
+				camRot.y += 1;
 			}if(keys[KeyEvent.VK_SPACE] && keyDown && /*toggled*/ grounded){
 				Vec3 jumpVec = new Vec3(0, -20, 0);
 				player.setVelocity(jumpVec.multiply(rate));
