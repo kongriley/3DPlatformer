@@ -183,16 +183,19 @@ public class Draw implements Serializable{
 			int z = (int) vec.z;
 			
 			int average_len = H/2;
-			int ry = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
+			int ry;
 			if(camZ >= z+average_len){
 				ry=(int) (W-camY + y);
+			}else{
+				ry = (int) (((y-camY) * ( average_len) ) / ( z+ ( average_len) -camZ)) + H/2;
 			}
 			
 			average_len = W/2;
-			int rx = (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
-
+			int rx;
 			if(camZ >= z+average_len){
 				rx = (int) (((x-camX) * ( average_len ) ) / (150)) + W/2;
+			}else{
+				rx= (int) (((x-camX) * ( average_len ) ) / ( z + ( W/2) -camZ)) + W/2;
 			}
 			int[] i = {rx, ry};
 			return i;
