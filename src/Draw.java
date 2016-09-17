@@ -373,6 +373,9 @@ public class Draw implements Serializable{
 			if(keys[KeyEvent.VK_R]){
 				Main.restart();
 			}
+			if(keys[KeyEvent.VK_ESCAPE]){
+				System.exit(0);
+			}
 //			System.out.println(y);
 			cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
