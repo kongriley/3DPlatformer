@@ -41,6 +41,11 @@ public class Draw implements Serializable{
 	transient BufferedImage cursorImg;
 	transient Cursor blankCursor;
 	void load(){
+		try {
+		    Robot robot = new Robot();
+		    robot.mouseMove(W/2, H/2);
+		} catch (AWTException e) {
+		}
 		for(int i = 0; i < 1000; i ++){
 			keys = new boolean[i];
 		}
