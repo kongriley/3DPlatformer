@@ -144,7 +144,7 @@ public class Draw implements Serializable{
 				int[] coords = getXY(vec);
 				g.drawChars(charAr, 0, 1, coords[0], coords[1]);
 			}
-			drawPoint(player.position.forward(camRot).add(player.position),g);
+			drawPoint(player.position.left(camRot).add(player.position),g);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
