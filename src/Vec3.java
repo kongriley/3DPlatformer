@@ -106,7 +106,7 @@ public class Vec3 implements Serializable{
 	
 	public Vec3 left(Vec3 rotation){
 		Vec3 rVec = this.forward(rotation);
-		rVec.rotate("y", this.clone(), 90);
+		rVec.rotate("y", this, 90);
 		return rVec;
 	}
 	
