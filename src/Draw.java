@@ -145,7 +145,7 @@ public class Draw implements Serializable{
 				g.drawChars(charAr, 0, 1, coords[0], coords[1]);
 			}
 			drawPoint(player.position.forward(camRot).add(player.position),g);
-			drawPoint(player.position.left(camRot).add(player.position),g);
+			drawPoint(player.position.right(camRot).add(player.position),g);
 		}
 		private int[][] getArray(ArrayList<Vec3> vecs, int[] array){
 			int[][] rArray = new int[2][array.length];
@@ -341,13 +341,13 @@ public class Draw implements Serializable{
 			} if(keys[KeyEvent.VK_A] && keyDown){
 //				Object3d.translateArray(objects, Vec3.LEFT.multiply(10*mul));
 //				player.translate(Vec3.LEFT.multiply(10*mul));
-				player.translate(player.position.left(camRot).multiply(10f*mul));
+				player.translate(player.position.right(camRot).multiply(-10f*mul));
 //				player.update();
 				cam = player.position;
 				x -= 10;
 			} if(keys[KeyEvent.VK_D] && keyDown){
 //				Object3d.translateArray(objects, Vec3.RIGHT.multiply(10*mul));
-				player.translate(Vec3.RIGHT.multiply(10*mul));
+				player.translate(player.position.right(camRot).multiply(10f*mul));
 //				player.update();
 				cam = player.position;
 				x += 10;
