@@ -221,9 +221,9 @@ public class Draw implements Serializable{
 				vec2.x = ((Vec3)obj.get(arrays[i][2])).x;
 				vec2.y = ((Vec3)obj.get(arrays[i][2])).y;
 				vec2.z = ((Vec3)obj.get(arrays[i][2])).z;
-				Vec3.midpoint(vec1, vec2);
+				vec1 = Vec3.midpoint(vec1, vec2);
 				
-				VecsMidZ[i]=(Integer)(int) vec1.z;
+				VecsMidZ[i]=(Integer)(int) Vec3.distance(player.position, vec1);
 //				VecsMidZ[i] = ((int) ((Vec3)(vecs.get(iArray[0]))).z);
 				VecsMidZ[i] *= 10;
 				VecsMidZ[i] += i;
@@ -232,12 +232,7 @@ public class Draw implements Serializable{
 			@SuppressWarnings("unused")
 			int[] sorted = new int[arrays.length];
 			int[][] temp = new int[arrays.length][arrays[0].length];
-			for(int i=0; i<arrays.length; i++){
-				for(int j=0; j<arrays[0].length; j++){
-					temp[i][j] = arrays[i][j];
-				}
-			}
-//			temp = arrays;
+			temp = arrays.clone();
 			
 			for(int i=0; i<arrays.length; i++){
 				int mod = VecsMidZ[i]%10;
